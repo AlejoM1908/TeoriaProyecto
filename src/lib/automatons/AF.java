@@ -5,42 +5,42 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+//Proyect imports
+import lib.App.ArchiveReader;
+
 public class AF {
-	public List<Character> alphabet = new ArrayList<Character>();
-	public List<String> statesList;
-	public String initialState = "q0";
-	public List<String> acceptanceStates;		
+	protected List<Character> alphabet = new ArrayList<Character>();
+	protected List<String> statesList;
+	protected String initialState;
+	protected List<String> acceptanceStates;		
 	
 	/**
-	 * Constructor(alfabeto, Strings, StringInicial, StringsAceptacion,Delta) de la clase para inicializar los atributos.
-	 * @param sigma describe cada simbolo de alfabeto, rango de cararacteres - o caracteres separados por saltos de línea y ninguno de estos símbolos debe ser igual al caracter $. Un rango de caracteres puede anteceder o proceder a un caracter y viceversa
-	 * @param Q Conjunto de Estados
-	 * @param q0 String Inicia
-	 * @param F Conjunto de Strings de Aceptación
-	 * @param delta Función de Transición
+	 * Constructor(alfabeto, lista de estados, estado inicial, estados de aceptación) de la clase para inicializar los atributos.
+	 * @param alphabet Describe cada simbolo del alfabeto
+	 * @param statesList Conjunto de estados del autómata
+	 * @param initialState Estado inicial
+	 * @param acceptanceStates Conjunto estados de aceptacion
 	 */
-	public AF(ArrayList<String> sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<String> delta) {
-		setAlphabet(sigma);
-		setStatesList(Q);
-		setInitialState(q0);
-		setAcceptaceStates(F);		
-		//setDelta(delta);		
-	}	
+	public AF(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState, ArrayList<String> acceptanceStates) {
+            this.alphabet = alphabet;
+            this.statesList = statesList;
+            this.initialState = initialState;
+            this.acceptanceStates = acceptanceStates;	
+	}
+        
+        
 	/**
 	 * Constructor(nombreArchivo) de la clase para inicializar los atributos a partir de un archivo cuyo formato
 	 * es el mismo acordado por todo el curso y aprobado por el docente (ver archivo \archivoEjemplo.txt).
-	 * @param nombreArchivo archivo para inicializar los atributos.
+	 * @param documentName archivo para inicializar los atributos.
 	 */
-        /*
-	public FiniteAutomaton(String nombreArchivo) {
-		FiniteAutomaton af = new FiniteAutomaton();
+	public AF(String documentName) {
+		AF af = ArchiveReader.readAF(documentName);
 		this.alphabet = af.alphabet;
 		this.statesList = af.statesList;
-		this.q0 = af.q0;
-		this.acceptanceStates = af.acceptanceStates;
-		this.delta = af.delta;		
+		this.initialState = af.initialState;
+		this.acceptanceStates = af.acceptanceStates;	
 	}
-        */
 
 
 
