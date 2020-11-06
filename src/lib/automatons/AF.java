@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class FiniteAutomaton {
+public class AF {
 	public List<Character> alphabet = new ArrayList<Character>();
 	public List<String> statesList;
 	public String initialState = "q0";
@@ -19,7 +19,7 @@ public class FiniteAutomaton {
 	 * @param F Conjunto de Strings de Aceptación
 	 * @param delta Función de Transición
 	 */
-	public FiniteAutomaton(ArrayList<String> sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<String> delta) {
+	public AF(ArrayList<String> sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<String> delta) {
 		setAlphabet(sigma);
 		setStatesList(Q);
 		setInitialState(q0);
