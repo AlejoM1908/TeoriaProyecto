@@ -37,7 +37,7 @@ public class AFD extends AF{
             System.exit(1);
         }
         BufferedReader br = new BufferedReader(new FileReader(file));
-        //StringTokenizer tokenizer;
+        StringTokenizer tokenizer;
         
         String line;
         
@@ -74,10 +74,30 @@ public class AFD extends AF{
                     this.initializeDelta(this.statesList.size(), this.alphabet.size());
                     
                 case ("#initial"):
+                    while (!(line = br.readLine()).startsWith("#")) {
+                        this.initialState = line;
+                    }
                     
                 case ("#accepting"):
+                    while ((!(line = br.readLine()).startsWith("#")) && this.statesList.contains(line)) {
+                        this.acceptanceStates.add(line);
+                    }
                     
                 case ("#transitions"):
+                     while ((line = br.readLine()) != null) {
+                        tokenizer = new StringTokenizer(line, " :>");
+                        
+                        String currentState = tokenizer.nextToken();
+                        Character currentChar = tokenizer.nextToken().charAt(0);
+                        String transition;
+                        
+                        if (this.statesList.contains(currentState) && this.alphabet.contains(currentChar)) {
+                            transition = tokenizer.nextToken();
+                            this.delta[this.statesList.indexOf(currentState)][this.alphabet.indexOf(currentChar)].add(transition);
+                            
+                        }
+
+                     }
                     
                 default:
             }
