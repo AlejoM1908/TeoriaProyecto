@@ -29,6 +29,56 @@ public class AFD extends AF{
         }
     }
     
+    public void showAlphabet() {
+        System.out.println("#Alphabet:");
+        if(this.alphabet.size()>1){
+        System.out.println(this.alphabet.get(0)+"-"+this.alphabet.get(this.alphabet.size()-1));
+        }else{
+        System.out.println(this.alphabet.get(0));
+        }
+    }
+
+    public void showStates() {
+        System.out.println("#States:");
+        for (int i = 0; i < this.statesList.size(); i++) {
+            System.out.println(this.statesList.get(i));
+        }
+    }
+
+    public void showFinalStates() {
+        System.out.println("#Accepting:");
+        for (int i = 0; i < this.acceptanceStates.size(); i++) {
+            System.out.println(this.acceptanceStates.get(i));
+        }
+    }
+
+    public void showInitialState() {
+        System.out.println("#Initial: ");
+        System.out.println(this.initialState);
+    }
+    
+    public void showDelta() {
+        System.out.println("#Transitions:");
+        for (int i = 0; i < this.statesList.size(); i++) {
+            for (int j = 0; j < this.alphabet.size(); j++) {
+                if(!this.delta[i][j].isEmpty()){
+                System.out.print(this.statesList.get(i)+":");
+                System.out.print(this.alphabet.get(j)+">");
+                for(int k=0;k<this.delta[i][j].size();k++){
+                    System.out.print(this.delta[i][j].get(k));
+                    if(k<this.delta[i][j].size()-1){
+                    System.out.print(";");
+                    }
+                }
+                }
+                if(!this.delta[i][j].isEmpty()){
+                    System.out.println("");
+                }
+            }
+        }
+
+    }
+    
     public void initializeAFD(String filePath) throws FileNotFoundException, IOException {
         File file = new File(filePath);
         
