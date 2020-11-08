@@ -35,6 +35,8 @@ public class ProyectMain {
         prueba.showFinalStates();
         prueba.showInitialState();
         prueba.showStates();
+        
+        prueba.processString("abab", true);
     }
     
 }
