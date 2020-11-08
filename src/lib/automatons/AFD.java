@@ -212,7 +212,7 @@ public class AFD extends AF{
         actualState = this.initialState;
         
         if (print == true) {
-            System.out.print(string + "\n");
+            System.out.print("Cadena: "+string + "\n" + "Salida: \n");
         }
         
         while (!string.isEmpty()) {
@@ -227,7 +227,7 @@ public class AFD extends AF{
                 string = "";
             }
             if (print == true) {
-                System.out.print("[" + actualState + "," + actualSymbol + string + "]->");
+                System.out.print("(" + actualState + "," + actualSymbol + string + ")->");
             }
             
             actualSymbolP = this.getColumn(actualSymbol);
@@ -241,14 +241,14 @@ public class AFD extends AF{
         }
         
         if (print == true) {
-            System.out.print("[" + actualState + "]" + "\t");
+            System.out.print("(" + actualState + ",$" + ")" + ">>");
         }
             
         if(this.getAcceptanceStates().contains(actualState)){
-            System.out.print("Aceptación\n");
+            System.out.print("accepted\n");
             return true;   
         }
-        System.out.print("No aceptación\n");
+        System.out.print("rejected\n");
         return false;
            
     }
