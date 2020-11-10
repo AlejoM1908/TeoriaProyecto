@@ -201,7 +201,7 @@ public class AFD extends AF{
         
         br.close();
     }
-     
+    
     
     public boolean processString(String string, boolean print) {
         String actualState;// este es el estado actual
