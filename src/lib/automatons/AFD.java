@@ -76,7 +76,6 @@ public class AFD extends AF{
                 }
             }
         }
-
     }
     
     public void initializeAFD(String filePath) throws FileNotFoundException, IOException {
