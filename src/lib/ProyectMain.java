@@ -29,12 +29,14 @@ public class ProyectMain {
         } catch (IOException ex) {
             Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        /*
         prueba.showAlphabet();
         prueba.showDelta();
         prueba.showFinalStates();
         prueba.showInitialState();
         prueba.showStates();
+        */
+        prueba.processString("abab", true);
     }
     
 }
