@@ -7,6 +7,7 @@ import java.util.List;
 
 //Proyect imports
 import lib.App.ArchiveReader;
+import lib.models.AutomatonModel;
 
 public class AF {
 	protected List<Character> alphabet = new ArrayList<>();
@@ -35,11 +36,11 @@ public class AF {
 	 * @param documentName archivo para inicializar los atributos.
 	 */
 	public AF(String documentName) {
-		AF af = ArchiveReader.readAF(documentName);
-		this.alphabet = af.alphabet;
-		this.statesList = af.statesList;
-		this.initialState = af.initialState;
-		this.acceptanceStates = af.acceptanceStates;	
+		AutomatonModel af = ArchiveReader.readAF(documentName);
+		this.alphabet = af.alphabet();
+		this.statesList = af.statesList();
+		this.initialState = af.initialState();
+		this.acceptanceStates = af.acceptanceStates();	
 	}
         //Constructor para llamar en AFD
         public AF(){
