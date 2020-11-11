@@ -1,12 +1,11 @@
 //Java imports
 package lib.models;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class AutomatonModel {
-    private List<Character> _alphabet = new ArrayList<>();
+    private List<Character> _alphabet;
     private List<String> _statesList;
     private String _initialState;
     private List<String> _acceptanceStates;
@@ -25,6 +24,56 @@ public class AutomatonModel {
         this._transitionFunction = transitionFunction;
         this._firstStackAlphabet = firstStackAlphabet;
         this._secondStackAlphabet = secondStackAlphabet;
+    }
+
+    public String toString(){
+        String[] alphabet = this._alphabet.toString().split("\\[|,|\\]| ");
+        String[] statesList = this._statesList.toString().split("\\[|,|\\]| ");
+        String[] acceptanceStates = this._acceptanceStates.toString().split("\\[|,|\\]| ");
+        String[] firstStackAlphabet = this._firstStackAlphabet.toString().split("\\[|,|\\]| ");
+        String[] secondStackAlphabet = this._secondStackAlphabet.toString().split("\\[|,|\\]| ");
+        String resultString = "";
+
+        resultString += "#alphabet\n";
+        for (String s: alphabet){
+            if (s.compareTo("") != 0) resultString += s + "\n";
+        }
+
+        resultString += "states\n";
+        for (String s: statesList){
+            if (s.compareTo("") != 0) resultString += s + "\n";
+        }
+
+        resultString += "#initial\n";
+        resultString += this._initialState + "\n";
+
+        resultString += "#accepting\n";
+        for (String s: acceptanceStates){
+            if (s.compareTo("") != 0) resultString += s + "\n";
+        }
+
+        if (firstStackAlphabet.length > 0){
+            resultString += "#firstStack\n";
+            for (String s: firstStackAlphabet){
+                if (s.compareTo("") != 0) resultString += s + "\n";
+            }
+        }
+
+        if (secondStackAlphabet.length > 0){
+            resultString += "#secondStack\n";
+            for (String s: firstStackAlphabet){
+                if (s.compareTo("") != 0) resultString += s + "\n";
+            }
+        }
+
+        resultString += "#transitions\n";
+        for (Map.Entry<String, Map<Character,TransitionModel>> entry1: this._transitionFunction.entrySet()){
+            for (Map.Entry<Character,TransitionModel> entry2: entry1.getValue().entrySet()){
+                resultString += entry2.getValue().toString() + "\n";
+            }
+        }
+
+        return resultString;
     }
 
     public List<Character> alphabet() {return _alphabet;}
