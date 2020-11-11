@@ -36,6 +36,26 @@ public class TransitionModel{
         this._secondStackAction = secondStackAction;
     }
 
+    public String toString(){
+        if (this._secondStackCharacter == null || this._secondStackAction == null){
+            if (this._firstStackCharacter == null || this._firstStackAction == null){
+                return this._actualState + ":" + this._actualCharacter + 
+                ">" + this._transitionState;
+            }
+            else{
+                return this._actualState + ":" + this._actualCharacter +
+                ":" + this._firstStackCharacter + ">" + this._transitionState + 
+                ":" + this._firstStackAction;
+            }
+        }
+        else{
+            return this._actualState + ":" + this._actualCharacter +
+            ":" + this._firstStackCharacter + ":" + this._secondStackCharacter +
+            ">" + this._transitionState + ":" + this._firstStackAction + ":" + 
+            this._secondStackAction;
+        }
+    }
+
     public String actualState() {return _actualState;}
     public char actualCharacter() {return _actualCharacter;}
     public String firstStackCharacter() {return _firstStackCharacter;}

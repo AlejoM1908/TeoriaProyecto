@@ -48,12 +48,10 @@ public class ArchiveReader {
                                         for (int i = 0; i <= characterAmount; i++) {
                                             alphabet.add((char) (first + i));
                                         }
-                                    } 
-                                    else
+                                    } else
                                         alphabet.add(c.charAt(0));
                                 }
-                            } 
-                            else if (line.contains("-")) { // La linea contiene un rango de caracteres
+                            } else if (line.contains("-")) { // La linea contiene un rango de caracteres
                                 String[] range = line.split("-"); // Obtener el rango de caracteres
                                 char first = range[0].charAt(0), second = range[1].charAt(0); // Los dos caracteres en
                                                                                               // el rango
@@ -62,8 +60,7 @@ public class ArchiveReader {
                                 for (int i = 0; i <= characterAmount; i++) {
                                     alphabet.add((char) (first + i));
                                 }
-                            } 
-                            else { // La linea contiene un unico caracter
+                            } else { // La linea contiene un unico caracter
                                 char ch = line.charAt(0);
                                 alphabet.add(ch);
                             }
@@ -79,8 +76,7 @@ public class ArchiveReader {
                                 for (String s : strings) {
                                     statesList.add(s);
                                 }
-                            } 
-                            else
+                            } else
                                 statesList.add(line);
                         }
 
@@ -102,8 +98,7 @@ public class ArchiveReader {
                                     if (statesList.contains(s))
                                         acceptanceStates.add(s);
                                 }
-                            } 
-                            else {
+                            } else {
                                 if (statesList.contains(line))
                                     acceptanceStates.add(line);
                             }
@@ -111,7 +106,7 @@ public class ArchiveReader {
 
                         break;
 
-                        case ("#firstStackAlphabet"):
+                    case ("#firstStackAlphabet"):
                         while (!(line = br.readLine()).startsWith("#")) {
 
                             if (line.contains(",")) { // La linea contiene una serie de caracteres
@@ -128,12 +123,10 @@ public class ArchiveReader {
                                         for (int i = 0; i <= characterAmount; i++) {
                                             firstStackAlphabet.add((char) (first + i));
                                         }
-                                    } 
-                                    else
+                                    } else
                                         firstStackAlphabet.add(c.charAt(0));
                                 }
-                            } 
-                            else if (line.contains("-")) { // La linea contiene un rango de caracteres
+                            } else if (line.contains("-")) { // La linea contiene un rango de caracteres
                                 String[] range = line.split("-"); // Obtener el rango de caracteres
                                 char first = range[0].charAt(0), second = range[1].charAt(0); // Los dos caracteres en
                                                                                               // el rango
@@ -142,15 +135,14 @@ public class ArchiveReader {
                                 for (int i = 0; i <= characterAmount; i++) {
                                     firstStackAlphabet.add((char) (first + i));
                                 }
-                            } 
-                            else { // La linea contiene un unico caracter
+                            } else { // La linea contiene un unico caracter
                                 char ch = line.charAt(0);
                                 firstStackAlphabet.add(ch);
                             }
                         }
                         break;
 
-                        case ("#secondStackAlphabet"):
+                    case ("#secondStackAlphabet"):
                         while (!(line = br.readLine()).startsWith("#")) {
 
                             if (line.contains(",")) { // La linea contiene una serie de caracteres
@@ -167,12 +159,10 @@ public class ArchiveReader {
                                         for (int i = 0; i <= characterAmount; i++) {
                                             secondStackAlphabet.add((char) (first + i));
                                         }
-                                    } 
-                                    else
+                                    } else
                                         secondStackAlphabet.add(c.charAt(0));
                                 }
-                            } 
-                            else if (line.contains("-")) { // La linea contiene un rango de caracteres
+                            } else if (line.contains("-")) { // La linea contiene un rango de caracteres
                                 String[] range = line.split("-"); // Obtener el rango de caracteres
                                 char first = range[0].charAt(0), second = range[1].charAt(0); // Los dos caracteres en
                                                                                               // el rango
@@ -181,8 +171,7 @@ public class ArchiveReader {
                                 for (int i = 0; i <= characterAmount; i++) {
                                     secondStackAlphabet.add((char) (first + i));
                                 }
-                            } 
-                            else { // La linea contiene un unico caracter
+                            } else { // La linea contiene un unico caracter
                                 char ch = line.charAt(0);
                                 secondStackAlphabet.add(ch);
                             }
@@ -208,29 +197,30 @@ public class ArchiveReader {
                                         transitionState = dividedString[2];
 
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
-                                            if (!transitionFunction.containsKey(currentState)){
-                                                transitionFunction.put(currentState, new HashMap<Character, TransitionModel>());
+                                            if (!transitionFunction.containsKey(currentState)) {
+                                                transitionFunction.put(currentState,
+                                                        new HashMap<Character, TransitionModel>());
                                             }
 
-                                            transitionFunction.get(currentState).put(transitionChar, new TransitionModel(
-                                                    currentState, transitionChar, transitionState));
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                    new TransitionModel(currentState, transitionChar, transitionState));
                                         }
-                                    } 
-                                    else if (dividedString.length == 5) {
+                                    } else if (dividedString.length == 5) {
                                         firstStackCharacter = dividedString[2];
                                         transitionState = dividedString[3];
                                         firstStackAction = dividedString[4];
 
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
-                                            if (!transitionFunction.containsKey(currentState)){
-                                                transitionFunction.put(currentState, new HashMap<Character, TransitionModel>());
+                                            if (!transitionFunction.containsKey(currentState)) {
+                                                transitionFunction.put(currentState,
+                                                        new HashMap<Character, TransitionModel>());
                                             }
 
-                                            transitionFunction.get(currentState).put(transitionChar, new TransitionModel(
-                                                    currentState, transitionChar, firstStackCharacter, transitionState, firstStackAction));
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                    new TransitionModel(currentState, transitionChar,
+                                                            firstStackCharacter, transitionState, firstStackAction));
                                         }
-                                    } 
-                                    else if (dividedString.length == 7) {
+                                    } else if (dividedString.length == 7) {
                                         firstStackCharacter = dividedString[2];
                                         secondStackCharacter = dividedString[3];
                                         transitionState = dividedString[4];
@@ -238,14 +228,72 @@ public class ArchiveReader {
                                         secondStackAction = dividedString[6];
 
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
-                                            if (!transitionFunction.containsKey(currentState)){
-                                                transitionFunction.put(currentState, new HashMap<Character, TransitionModel>());
+                                            if (!transitionFunction.containsKey(currentState)) {
+                                                transitionFunction.put(currentState,
+                                                        new HashMap<Character, TransitionModel>());
                                             }
 
-                                            transitionFunction.get(currentState).put(transitionChar, new TransitionModel(
-                                                    currentState, transitionChar, firstStackCharacter, secondStackCharacter, 
-                                                    transitionState, firstStackAction, secondStackAction));
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                    new TransitionModel(currentState, transitionChar,
+                                                            firstStackCharacter, secondStackCharacter, transitionState,
+                                                            firstStackAction, secondStackAction));
                                         }
+                                    }
+                                }
+                            } else {
+                                String[] dividedString = line.split(":|>");
+                                String currentState = dividedString[0];
+                                Character transitionChar = dividedString[1].charAt(0);
+                                String transitionState;
+                                String firstStackCharacter;
+                                String secondStackCharacter;
+                                String firstStackAction;
+                                String secondStackAction;
+
+                                if (dividedString.length == 3) {
+                                    transitionState = dividedString[2];
+
+                                    if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
+                                        if (!transitionFunction.containsKey(currentState)) {
+                                            transitionFunction.put(currentState,
+                                                    new HashMap<Character, TransitionModel>());
+                                        }
+
+                                        transitionFunction.get(currentState).put(transitionChar,
+                                                new TransitionModel(currentState, transitionChar, transitionState));
+                                    }
+                                } else if (dividedString.length == 5) {
+                                    firstStackCharacter = dividedString[2];
+                                    transitionState = dividedString[3];
+                                    firstStackAction = dividedString[4];
+
+                                    if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
+                                        if (!transitionFunction.containsKey(currentState)) {
+                                            transitionFunction.put(currentState,
+                                                    new HashMap<Character, TransitionModel>());
+                                        }
+
+                                        transitionFunction.get(currentState).put(transitionChar,
+                                                new TransitionModel(currentState, transitionChar, firstStackCharacter,
+                                                        transitionState, firstStackAction));
+                                    }
+                                } else if (dividedString.length == 7) {
+                                    firstStackCharacter = dividedString[2];
+                                    secondStackCharacter = dividedString[3];
+                                    transitionState = dividedString[4];
+                                    firstStackAction = dividedString[5];
+                                    secondStackAction = dividedString[6];
+
+                                    if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
+                                        if (!transitionFunction.containsKey(currentState)) {
+                                            transitionFunction.put(currentState,
+                                                    new HashMap<Character, TransitionModel>());
+                                        }
+
+                                        transitionFunction.get(currentState).put(transitionChar,
+                                                new TransitionModel(currentState, transitionChar, firstStackCharacter,
+                                                        secondStackCharacter, transitionState, firstStackAction,
+                                                        secondStackAction));
                                     }
                                 }
                             }
@@ -254,15 +302,14 @@ public class ArchiveReader {
                         break;
                 }
             }
-        
-        br.close();
-        return new AutomatonModel(alphabet, statesList, initialState, acceptanceStates, transitionFunction, firstStackAlphabet, secondStackAlphabet);
-        }
-        catch (FileNotFoundException e) {
+
+            br.close();
+            return new AutomatonModel(alphabet, statesList, initialState, acceptanceStates, transitionFunction,
+                    firstStackAlphabet, secondStackAlphabet);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
