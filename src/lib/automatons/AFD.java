@@ -1,6 +1,10 @@
 //Java imports
 package lib.automatons;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,17 +94,47 @@ public class AFD extends AF{
         );
     }
     
-    public boolean processString(String string, boolean print) {
+    public boolean processString(String string, boolean print){
+        if(this.processStringR(string, print).contains("accepted")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException{
+        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" + fileName);
+        String line;
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        for(String actual : stringList){
+            line = processStringR(actual, print);
+            if(line.contains("accepted")){
+                bw.write(line.concat("Yes \n\n"));;
+            }else{
+                bw.write(line.concat("No \n\n"));;
+            }
+        }
+        
+        bw.close();
+        
+    }
+    
+    public String processStringR(String string, boolean print) {
         String actualState;// este es el estado actual
         int actualStateP;//fila del estado actual
         String actualSymbol; //char a leer
         int actualSymbolP; //columna del char a leer
+        String process; //cadena con todo el procesamiento
         
         actualState = this.initialState;
         
-        if (print == true) {
-            System.out.print("Cadena: "+string + "\n" + "Salida: \n");
-        }
+        process = "Cadena: "+string + "\n" + "Salida: \n";
         
         while (!string.isEmpty()) {
             actualStateP = this.getRow(actualState);
@@ -113,9 +147,8 @@ public class AFD extends AF{
             } else {
                 string = "";
             }
-            if (print == true) {
-                System.out.print("(" + actualState + "," + actualSymbol + string + ")->");
-            }
+            
+            process = process.concat("(" + actualState + "," + actualSymbol + string + ")->");
             
             actualSymbolP = this.getColumn(actualSymbol);
             
@@ -127,18 +160,23 @@ public class AFD extends AF{
             }
         }
         
+        process = process.concat("(" + actualState + ",$" + ")" + ">>");
+        
         if (print == true) {
-            System.out.print("(" + actualState + ",$" + ")" + ">>");
+            System.out.print(process);
         }
             
         if(this.getAcceptanceStates().contains(actualState)){
+            process = process.concat("accepted\n");
             System.out.print("accepted\n");
-            return true;   
+            return process;   
         }
+        process = process.concat("rejected\n");
         System.out.print("rejected\n");
-        return false;
+        return process;  
            
     }
+    
 
     @Override
     public String toString() {

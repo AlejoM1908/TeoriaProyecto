@@ -1,0 +1,10 @@
+Cadena: abab
+Salida: 
+(q0,abab)->(q1,bab)->(q3,ab)->(q2,b)->(q0,$)>>accepted
+Yes 
+
+Cadena: baba
+Salida: 
+(q0,baba)->(q2,aba)->(q3,ba)->(q1,a)->(q0,$)>>accepted
+Yes 
+
