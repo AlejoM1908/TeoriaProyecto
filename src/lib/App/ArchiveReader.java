@@ -219,7 +219,18 @@ public class ArchiveReader {
                                             transitionFunction.get(currentState).put(transitionChar,
                                                     new TransitionModel(currentState, transitionChar,
                                                             firstStackCharacter, transitionState, firstStackAction));
+                                        }else if(statesList.contains(currentState) && (transitionChar == '$')){
+                                            if (!transitionFunction.containsKey(currentState)) {
+                                                transitionFunction.put(currentState,
+                                                        new HashMap<Character, TransitionModel>());
+                                            }
+
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                    new TransitionModel(currentState, transitionChar,
+                                                            firstStackCharacter, transitionState, firstStackAction));
                                         }
+                                       
+                                    
                                     } else if (dividedString.length == 7) {
                                         firstStackCharacter = dividedString[2];
                                         secondStackCharacter = dividedString[3];

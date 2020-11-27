@@ -25,7 +25,7 @@ public class AFD extends AF{
         this.initialState = model.initialState();
         this.statesList = model.statesList();
         this.acceptanceStates = model.acceptanceStates();
-        initializeAFD(model);
+        initializeAFD();
     }
 
     public void initializeDelta(int sizeOfStates, int sizeofSigma) {
@@ -81,8 +81,8 @@ public class AFD extends AF{
         return delta;
     }
     
-    public void initializeAFD(AutomatonModel model){
-        Map<String,Map<Character,TransitionModel>> deltaModel = model.transitionFunction(); 
+    public void initializeAFD(){
+        Map<String,Map<Character,TransitionModel>> deltaModel = this.model.transitionFunction(); 
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
         
         deltaModel.values().stream().forEach((sMap) -> {
@@ -137,9 +137,7 @@ public class AFD extends AF{
         process = "Cadena: "+string + "\n" + "Salida: \n";
         
         while (!string.isEmpty()) {
-            actualStateP = this.getRow(actualState);
-            actualSymbol = Character.toString(string.charAt(0));
-            
+            actualStateP = this.getRow(actualState);     
             actualSymbol = Character.toString(string.charAt(0));
             
             if (string.length() > 1) {
