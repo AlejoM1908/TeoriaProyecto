@@ -9,7 +9,7 @@ import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
 
-public abstract class AF {
+public class AF {
 	protected List<Character> alphabet = new ArrayList<>();
 	protected List<String> statesList;
 	protected String initialState;
@@ -57,28 +57,4 @@ public abstract class AF {
 		this.initialState = "";
 		this.acceptanceStates = new ArrayList<>();
 	}
-
-	public void setAlphabet(List<Character> alphabet) {
-		this.alphabet = alphabet;
-	}
-
-	public void setStatesList(List<String> statesList) {
-		this.statesList = statesList;
-	}
-
-	public void setInitialState(String initialState) {
-		this.initialState = initialState;
-	}
-
-	public void setAcceptaceStates(List<String> acceptanceStates) {
-		this.acceptanceStates = acceptanceStates;
-	}
-
-	public void setTransitionFunction(Map<String,Map<Character,TransitionModel>> transitionFunction){
-		this.transitionFunction = transitionFunction;
-	}
-	
-	//Abstarct Methods
-	public abstract boolean processString(String string);
-	public abstract void initializeAutomaton();
 }

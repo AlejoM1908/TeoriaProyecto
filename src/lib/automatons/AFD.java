@@ -7,17 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
-import lib.models.TransitionModel;
 
 public class AFD extends AF{
-    
     private ArrayList<String>[][] delta;
     private AutomatonModel model;
-    //private ArrayList<String> limboStates;
-    //private ArrayList<String> inaccessibleStates = new ArrayList<>();
 
     public AFD(String path){
         this.model = ArchiveReader.readAF(path);
@@ -25,7 +20,8 @@ public class AFD extends AF{
         this.initialState = model.initialState();
         this.statesList = model.statesList();
         this.acceptanceStates = model.acceptanceStates();
-        initializeAFD(model);
+        this.transitionFunction = model.transitionFunction();
+        initializeAutomaton();
     }
 
     public void initializeDelta(int sizeOfStates, int sizeofSigma) {
@@ -81,11 +77,10 @@ public class AFD extends AF{
         return delta;
     }
     
-    public void initializeAFD(AutomatonModel model){
-        Map<String,Map<Character,TransitionModel>> deltaModel = model.transitionFunction(); 
+    public void initializeAutomaton(){
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
         
-        deltaModel.values().stream().forEach((sMap) -> {
+        this.transitionFunction.values().stream().forEach((sMap) -> {
             sMap.values().stream().forEach((cMap)->{
                 this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.indexOf(cMap.actualCharacter())].add(cMap.transitionState());
             }
@@ -173,8 +168,7 @@ public class AFD extends AF{
         }
         process = process.concat("rejected\n");
         System.out.print("rejected\n");
-        return process;  
-           
+        return process; 
     }
     
 
@@ -182,8 +176,4 @@ public class AFD extends AF{
     public String toString() {
         return this.model.toString();
     }
-    
-    
-    
-    
 }
