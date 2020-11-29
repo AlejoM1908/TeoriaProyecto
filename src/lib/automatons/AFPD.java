@@ -10,47 +10,49 @@ import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
 
-public class AFPD extends AFP{
-    
+public class AFPD extends AFP {
+
     private ArrayList<TransitionModel>[][] delta;
     private AutomatonModel model;
-    
-    public AFPD(String path){
+
+    public AFPD(String path) {
         super(path);
         this.model = ArchiveReader.readAF(path);
         initializeAFPD();
     }
-    
+
     public void initializeDelta(int sizeOfStates, int sizeofSigma) {
-        this.delta = new ArrayList[sizeOfStates][sizeofSigma+1];
+        this.delta = new ArrayList[sizeOfStates][sizeofSigma + 1];
         for (int i = 0; i < sizeOfStates; i++) {
             for (int j = 0; j < sizeofSigma; j++) {
                 this.delta[i][j] = new ArrayList<TransitionModel>();
             }
         }
     }
-    
-    public void initializeAFPD(){
-        Map<String,Map<Character,TransitionModel>> deltaModel = this.model.transitionFunction(); 
+
+    public void initializeAFPD() {
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
         System.out.println(this.model.toString());
-        
-        
-        deltaModel.values().stream().forEach((sMap) -> {
-            sMap.values().stream().forEach((cMap)->{
-                System.out.println("Estado: " + cMap.actualState()+ this.statesList.contains(cMap.actualState()) + "Caracter: " + cMap.actualCharacter() + this.alphabet.contains(cMap.actualState()));
-                if(cMap.actualCharacter() == '$'){
-                    this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.size()+1].add(cMap);
-                }else{
-                    this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.indexOf(cMap.actualCharacter())].add(cMap);
+
+        this.model.transitionFunction().values().stream().forEach((sMap) -> {
+            sMap.values().stream().forEach((cmap) -> {
+                cmap.forEach((cMap) -> {
+                    System.out.println("Estado: " + cMap.actualState() + this.statesList.contains(cMap.actualState()) + "Caracter: " + cMap.actualCharacter() + this.alphabet.contains(cMap.actualState()));
+
+                    if (cMap.actualCharacter() == '$') {
+                        this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.size() + 1].add(cMap);
+                    } else {
+                        this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.indexOf(cMap.actualCharacter())].add(cMap);
+                    }
                 }
-                
+                );
+
             }
             );
         }
         );
     }
-    
+
     public int getRow(String state) {
         //esta función es para obtener la fila en la que se encuentra un estado (se asume columna 0)
         for (int i = 0; i < this.statesList.size(); i++) {
@@ -65,8 +67,8 @@ public class AFPD extends AFP{
 
     public int getColumn(String symbol) {
         //esta función es para obtener la columna en la que se encuentra un simbolo (se asume fila 0 )
-        if(symbol.equals("$")){
-            return this.alphabet.size()+1;
+        if (symbol.equals("$")) {
+            return this.alphabet.size() + 1;
         }
 
         for (int i = 0; i < this.alphabet.size(); i++) {
@@ -106,16 +108,15 @@ public class AFPD extends AFP{
     public List<String> getAcceptanceStates() {
         return acceptanceStates;
     }
-    
-    
-    public void modifyStack(String operation, Character parameter){
-        
+
+    public void modifyStack(String operation, Character parameter) {
+
     }
-    
-    public String returnStackasString(){
+
+    public String returnStackasString() {
         return Arrays.toString(this.stack.toArray());
     }
-    
+
     public String processStringR(String string, boolean print) {
         String actualState;// este es el estado actual
         int actualStateP;//fila del estado actual
@@ -152,11 +153,11 @@ public class AFPD extends AFP{
                         if (l.firstStackAction().charAt(0) != lamda) {
                             this.stack.push(l.firstStackAction().charAt(0));
                             System.out.println("2");
-                        }                   
+                        }
                         actualState = l.transitionState();
                         System.out.println("7");
                         break;
-                        
+
                     } else if (!this.stack.isEmpty()) {
                         if (l.firstStackCharacter().charAt(0) == this.stack.peek()) {
                             process = process.concat(returnStackasString() + ")->");
@@ -193,9 +194,9 @@ public class AFPD extends AFP{
         }
         if (this.acceptanceStates.contains(actualState) && this.stack.empty() && reject) {
             System.out.print(process);
-            System.out.print("("+actualState + "," + " $, [$])" );
+            System.out.print("(" + actualState + "," + " $, [$])");
             System.out.print("accepted\n");
-            
+
             return "";
         } else {
             System.out.print(process);
@@ -204,5 +205,5 @@ public class AFPD extends AFP{
         }
 
     }
-    
+
 }

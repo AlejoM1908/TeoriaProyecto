@@ -13,7 +13,8 @@ public class ProyectMain {
         AFD prueba = new AFD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFD.txt");
         System.out.println(prueba.toString());
         
-        prueba.processString("abab", true);
+        prueba.processString("aababbab", true);
+        /*
         try {
             prueba.processStringList(Arrays.asList("abab", "baba"), "Test.txt", true);
         } catch (IOException ex) {
@@ -21,7 +22,8 @@ public class ProyectMain {
         }
         */
         
-        AFPD test = new AFPD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD3.txt");
-        test.processStringR("aaaabb", true);
+        AFPD test = new AFPD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD2.txt");
+        test.processStringR("aab", true);
+
     }
 }
