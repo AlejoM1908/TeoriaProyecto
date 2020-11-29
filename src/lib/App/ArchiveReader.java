@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
 
@@ -20,7 +21,7 @@ public class ArchiveReader {
         List<String> statesList = new ArrayList<>();
         String initialState = "";
         List<String> acceptanceStates = new ArrayList<>();
-        Map<String, Map<Character, TransitionModel>> transitionFunction = new HashMap<>();
+        Map<String, Map<Character, ArrayList<TransitionModel>>> transitionFunction = new HashMap<>();
         List<Character> firstStackAlphabet = new ArrayList<>();
         List<Character> secondStackAlphabet = new ArrayList<>();
 
@@ -199,11 +200,14 @@ public class ArchiveReader {
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
                                                 transitionFunction.put(currentState,
-                                                        new HashMap<Character, TransitionModel>());
+                                                        new HashMap<Character, ArrayList<TransitionModel>>());
                                             }
 
+                                            ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                            transitionModel.add(new TransitionModel(currentState, transitionChar, transitionState));
+
                                             transitionFunction.get(currentState).put(transitionChar,
-                                                    new TransitionModel(currentState, transitionChar, transitionState));
+                                                transitionModel);
                                         }
                                     } else if (dividedString.length == 5) {
                                         firstStackCharacter = dividedString[2];
@@ -213,12 +217,22 @@ public class ArchiveReader {
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
                                                 transitionFunction.put(currentState,
-                                                        new HashMap<Character, TransitionModel>());
+                                                        new HashMap<Character, ArrayList<TransitionModel>>());
                                             }
+                                            
+                                            if (!transitionFunction.get(currentState).containsKey(transitionChar)){
+                                                ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                                transitionModel.add(new TransitionModel(currentState, transitionChar,
+                                                firstStackCharacter, transitionState, firstStackAction));
 
-                                            transitionFunction.get(currentState).put(transitionChar,
+                                                transitionFunction.get(currentState).put(transitionChar,
+                                                    transitionModel);
+                                            }
+                                            else{
+                                                transitionFunction.get(currentState).get(transitionChar).add(
                                                     new TransitionModel(currentState, transitionChar,
                                                             firstStackCharacter, transitionState, firstStackAction));
+                                            }
                                         }
                                     } else if (dividedString.length == 7) {
                                         firstStackCharacter = dividedString[2];
@@ -230,13 +244,24 @@ public class ArchiveReader {
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
                                                 transitionFunction.put(currentState,
-                                                        new HashMap<Character, TransitionModel>());
+                                                        new HashMap<Character, ArrayList<TransitionModel>>());
                                             }
 
-                                            transitionFunction.get(currentState).put(transitionChar,
+                                            if (!transitionFunction.get(currentState).containsKey(transitionChar)){
+                                                ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                                transitionModel.add(new TransitionModel(currentState, transitionChar,
+                                                firstStackCharacter, secondStackCharacter, transitionState,
+                                                firstStackAction, secondStackAction));
+
+                                                transitionFunction.get(currentState).put(transitionChar,
+                                                    transitionModel);
+                                            }
+                                            else{
+                                                transitionFunction.get(currentState).get(transitionChar).add(
                                                     new TransitionModel(currentState, transitionChar,
                                                             firstStackCharacter, secondStackCharacter, transitionState,
                                                             firstStackAction, secondStackAction));
+                                            }
                                         }
                                     }
                                 }
@@ -256,11 +281,14 @@ public class ArchiveReader {
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
                                             transitionFunction.put(currentState,
-                                                    new HashMap<Character, TransitionModel>());
+                                                    new HashMap<Character, ArrayList<TransitionModel>>());
                                         }
 
+                                        ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                        transitionModel.add(new TransitionModel(currentState, transitionChar, transitionState));
+
                                         transitionFunction.get(currentState).put(transitionChar,
-                                                new TransitionModel(currentState, transitionChar, transitionState));
+                                                transitionModel);
                                     }
                                 } else if (dividedString.length == 5) {
                                     firstStackCharacter = dividedString[2];
@@ -270,12 +298,21 @@ public class ArchiveReader {
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
                                             transitionFunction.put(currentState,
-                                                    new HashMap<Character, TransitionModel>());
+                                                    new HashMap<Character, ArrayList<TransitionModel>>());
                                         }
+                                        if (!transitionFunction.get(currentState).containsKey(transitionChar)){
+                                            ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                            transitionModel.add(new TransitionModel(currentState, transitionChar,
+                                            firstStackCharacter, transitionState, firstStackAction));
 
-                                        transitionFunction.get(currentState).put(transitionChar,
-                                                new TransitionModel(currentState, transitionChar, firstStackCharacter,
-                                                        transitionState, firstStackAction));
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                transitionModel);
+                                        }
+                                        else {
+                                            transitionFunction.get(currentState).get(transitionChar).add(
+                                                new TransitionModel(currentState, transitionChar,
+                                                        firstStackCharacter, transitionState, firstStackAction));
+                                        }
                                     }
                                 } else if (dividedString.length == 7) {
                                     firstStackCharacter = dividedString[2];
@@ -287,13 +324,22 @@ public class ArchiveReader {
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
                                             transitionFunction.put(currentState,
-                                                    new HashMap<Character, TransitionModel>());
+                                                    new HashMap<Character, ArrayList<TransitionModel>>());
                                         }
-
-                                        transitionFunction.get(currentState).put(transitionChar,
-                                                new TransitionModel(currentState, transitionChar, firstStackCharacter,
-                                                        secondStackCharacter, transitionState, firstStackAction,
-                                                        secondStackAction));
+                                        if (!transitionFunction.get(currentState).containsKey(transitionChar)){
+                                            ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                                            transitionModel.add(new TransitionModel(currentState, transitionChar,
+                                            firstStackCharacter, secondStackCharacter, transitionState,
+                                            firstStackAction, secondStackAction));
+                                            transitionFunction.get(currentState).put(transitionChar,
+                                                transitionModel);
+                                        }
+                                        else{
+                                            transitionFunction.get(currentState).get(transitionChar).add(
+                                                new TransitionModel(currentState, transitionChar,
+                                                        firstStackCharacter, secondStackCharacter, transitionState,
+                                                        firstStackAction, secondStackAction));
+                                        }
                                     }
                                 }
                             }
