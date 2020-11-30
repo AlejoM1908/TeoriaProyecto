@@ -1,12 +1,17 @@
 package lib.automatons;
 
-import lib.App.ArchiveReader;
-import lib.models.AutomatonModel;
+import java.util.LinkedList;
 
 class test{
     public static void main(String[] args) {
-        AutomatonModel test = ArchiveReader.readAF("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AFPD.txt");
+        AF2P test = new AF2P("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AF2P.msm");
 
-        System.out.println(test.toString());
+        LinkedList<String> processings = test.showProcessing("c");
+
+        for(String processing: processings){
+            System.out.println(processing);
+        }
+
+        System.out.println("\n" + test.toString());
     }
 }

@@ -1,10 +1,10 @@
 //Java imports
 package lib.automatons;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Stack;
 
 //Proyect imports
@@ -16,7 +16,6 @@ public class AF2P extends AF{
     protected List<Character> firstStackAlphabet;
     protected List<Character> secondStackAlphabet;
     protected Stack<Character> firstStack, secondStack;
-    private Queue<String> instantStates = new LinkedList<String>();
 
     /**
      * Contructor de la clase que recibe el path al documento que contiene
@@ -52,7 +51,7 @@ public class AF2P extends AF{
      * @param secondStackAlphabet
      */
     public AF2P(List<Character> alphabet, List<String> statesList,
-            String initialState, List<String> acceptanceStates, Map<String,Map<Character,TransitionModel>> transitionFunction,
+            String initialState, List<String> acceptanceStates, Map<String,Map<Character,ArrayList<TransitionModel>>> transitionFunction,
             List<Character> firstStackAlphabet, List<Character> secondStackAlphabet){
         this.alphabet = alphabet;
         this.statesList = statesList;
@@ -68,48 +67,198 @@ public class AF2P extends AF{
      * @param stack
      * @param stackActtion
      */
-    public boolean modifyStack(Stack<Character> stack, char stackCharacter, char stackAction ){
-        if (stackCharacter == '$' && stackAction == '$'){
-            return true;
+    public String modifyStack(String stack, char stackCharacter, char stackAction ){
+        try{
+            if (stackCharacter == '$' && stackAction != '$'){
+                stack = stack.concat(String.valueOf(stackAction));
+                return stack;
+            }
+            else if (stackCharacter != '$' && stackAction == '$'){
+                if (stack.length()>1 && stack.charAt(stack.length()-1) == stackCharacter){
+                    stack = stack.substring(0 ,stack.length()-1);
+                    return stack;
+                }
+                else if (stack.charAt(0) == stackCharacter){
+                    stack = "";
+                    return stack;
+                }
+            }
+            else if (stackCharacter != '$' && stackAction != '$'){
+                if (stack.length()>1 && stack.charAt(stack.length()-1) == stackCharacter){
+                    stack = stack.substring(0 ,stack.length()-1);
+                    stack = stack.concat(String.valueOf(stackAction));
+                    return stack;
+                }
+                else if (stack.charAt(0) == stackCharacter){
+                    stack = "";
+                    return stack;
+                }
+            }
+                
+            return stack;
         }
-        else if (stackCharacter == '$' && stackAction != '$'){
-            stack.add(stackAction);
-            return true;
+        catch (Exception e){
+            return "###";
         }
-        else if (stackCharacter != '$' && stackAction == '$'){
-            if (stack.peek() == stackCharacter)
-                return true;
+    }
+
+    public LinkedList<String> recursiveProcessing(String string, TransitionModel operation, String stackOne, String stackTwo){
+        LinkedList<String> result = new LinkedList<>();
+
+        if (operation == null){
+            result.add(">>aborted");
+            return result;
         }
-        else if (stackCharacter != '$' && stackAction != '$'){
-            if (stack.peek() == stackCharacter){
-                stack.pop();
-                stack.add(stackAction);
-                return true;
+        
+        String newStackOne = modifyStack(stackOne, operation.firstStackCharacter().charAt(0), operation.firstStackAction().charAt(0));
+        String newStackTwo = modifyStack(stackTwo, operation.secondStackCharacter().charAt(0), operation.secondStackAction().charAt(0));
+
+        if (stackOne.compareTo(newStackOne) == 0 && (operation.firstStackCharacter().charAt(0) != '$' && operation.firstStackAction().charAt(0) != '$')){
+            result.add(">>aborted");
+            return result;
+        }
+
+        if (stackTwo.compareTo(newStackTwo) == 0 && (operation.secondStackCharacter().charAt(0) != '$' && operation.secondStackAction().charAt(0) != '$')){
+            result.add(">>aborted");
+            return result;
+        }
+
+        if (newStackOne.compareTo("###") == 0 || newStackTwo.compareTo("###") == 0){
+            result.add(">>aborted");
+            return result;
+        }
+        
+        if(string.length() == 0 && acceptanceStates.contains(operation.transitionState()) && newStackOne.isEmpty() && newStackTwo.isEmpty()){
+            result.add("(" + operation.transitionState() + ",$,$,$)>>accepted");
+            return result;
+        }
+        else if (string.length() == 0){
+            String resultString = "(" + operation.transitionState() + ",$,";
+
+            if (newStackOne.isEmpty())
+                resultString += "$,";
+            else
+                resultString += newStackOne + ",";
+
+            if (newStackTwo.isEmpty())
+                resultString += "$)>>notAccepted";
+            else
+                resultString += newStackTwo + ")>>notAccepted";
+
+            result.add(resultString);
+            return result;
+        }
+
+        if (!this.alphabet.contains(string.charAt(0))){
+            result.add(">>aborted");
+            return result;
+        }
+
+        char actualCharacter = string.charAt(0);
+        ArrayList<TransitionModel> options = this.transitionFunction.get(operation.transitionState()).get(actualCharacter);
+
+        if (options == null){
+            result.add(">>aborted");
+            return result;
+        }
+
+        for (TransitionModel option: options){
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, newStackOne, newStackTwo);
+
+            for (String valueString: value){
+                String resultString = "(" + option.transitionState() + "," + string + ",";
+
+                if (newStackOne.compareTo("") == 0)
+                    resultString +=  "$,";
+                else
+                    resultString += newStackOne + ",";
+
+                if (newStackTwo.compareTo("") == 0)
+                    resultString += "$)->";
+                else
+                    resultString += newStackTwo + ")->";
+
+                result.add(resultString + valueString);
             }
         }
 
-        return false;
-    }
+        options = this.transitionFunction.get(operation.transitionState()).get('$');
 
-    public boolean processString(String string, String actualState){
-        if (string.compareTo("") == 0 && this.acceptanceStates.contains(actualState))
-            return true;
-        else if (string.compareTo("") == 0)
-            return false;
-            
-        boolean returnAcceptance = false;
-        
-        while(string.compareTo("") != 0){
-            Map<Character,TransitionModel> entry = this.transitionFunction.get(actualState);
+        if (options == null){
+            return result;
         }
+
+        for (TransitionModel option: options){
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, newStackOne, newStackTwo);
+
+            for (String valueString: value){
+                String resultString = "(" + option.transitionState() + "," + string + ",";
+
+                if (newStackOne.compareTo("") == 0)
+                    resultString +=  "$,";
+                else
+                    resultString += newStackOne + ",";
+
+                if (newStackTwo.compareTo("") == 0)
+                    resultString += "$)->";
+                else
+                    resultString += newStackTwo + ")->";
+
+                result.add(resultString + valueString);
+            }
+        }
+
+        return result;
     }
 
-    public Queue<String> detailedProcessString(String string){
-        
-    }
+    public LinkedList<String> showProcessing(String string){
+        LinkedList<String> result = new LinkedList<>();
 
-    public void detailedFileProcessing(String string, String documentPath){
+        if (string == null || string.compareTo("") == 0){
+            if (this.acceptanceStates.contains(this.initialState))
+                result.add("(" + this.initialState + ",$,$,$)>>accepted");
+            else
+                result.add(">>aborted");
+            return result;
+        }
 
+        char actualCharacter = string.charAt(0);
+
+        if (!this.alphabet.contains(actualCharacter)){
+            result.add(">>aborted");
+            return result;
+        }
+
+        ArrayList<TransitionModel> options = this.transitionFunction.get(this.initialState).get(actualCharacter);
+
+        if (options == null){
+            result.add(">>aborted");
+            return result;
+        }
+
+        for (TransitionModel option: options){
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, "", "");
+
+            for (String valueString: value){
+                result.add("(" + this.initialState + "," + string + ",$,$)->" + valueString);
+            }
+        }
+
+        options = this.transitionFunction.get(this.initialState).get('$');
+
+        if (options == null){
+            return result;
+        }
+
+        for (TransitionModel option: options){
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, "", "");
+
+            for (String valueString: value){
+                result.add("(" + this.initialState + "," + string + ",$,$)->" + valueString);
+            }
+        }
+
+        return result;
     }
 
     public String toString(){
