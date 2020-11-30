@@ -1,6 +1,12 @@
-(q0,aaaabb, $)->(q1,aaabb, [A])->(q0,aaabb, [A, A])->(q1,aabb, [A, A, A])->(q0,aabb, [A, A, A, A])->(q1,abb, [A, A, A, A, A])->(q0,abb, [A, A, A, A, A, A])->(q1,bb, [A, A, A, A, A, A, A])->(q0,bb, [A, A, A, A, A, A, A, A])->(q2,b, [A, A, A, A, A, A, A])->No 
+Cadena: aaaabb
+Salida:(q0,aaaabb, $)->(q1,aaabb, X)->(q1,aabb, AX)->(q1,abb, AAX)->(q1,bb, AAAX)->(q1,b, AAX)->(q1, $, AX) -> rejected
+No 
 
-(q0,abb, $)->(q1,bb, [A])->(q0,bb, [A, A])->(q2,b, [A])->(q2, $, [$]) -> accepted Yes 
+Cadena: abb
+Salida:(q0,abb, $)->(q1,bb, X)->(q0,b, $)->(q2, $, X) -> rejected
+No 
 
-(q0,aabb, $)->(q1,abb, [A])->(q0,abb, [A, A])->(q1,bb, [A, A, A])->(q0,bb, [A, A, A, A])->(q2,b, [A, A, A])->No 
+Cadena: aabb
+Salida:(q0,aabb, $)->(q1,abb, X)->(q1,bb, AX)->(q1,b, X)->(q0, $, $) -> accepted
+Yes 
 

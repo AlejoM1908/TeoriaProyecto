@@ -35,7 +35,7 @@ public class AFPD extends AFP {
 
     public void initializeAFPD() {
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
-        System.out.println(this.model.toString());
+        //System.out.println(this.model.toString());
 
         this.model.transitionFunction().values().stream().forEach((sMap) -> {
             sMap.values().stream().forEach((cmap) -> {
@@ -104,11 +104,17 @@ public class AFPD extends AFP {
     }
 
     public void modifyStack(String operation, Character parameter) {
-
+        
     }
 
     public String returnStackasString() {
-        return Arrays.toString(this.stack.toArray());
+        Object [] array = this.stack.toArray();
+        String stack = "";
+        for (int i = array.length-1; i >= 0; i--) {
+            stack = stack.concat(array[i].toString());
+            
+        }
+        return stack;
     }
 
     public boolean processString(String string){
@@ -129,12 +135,13 @@ public class AFPD extends AFP {
         int actualStateP;//fila del estado actual
         String actualSymbol; //char a leer
         int actualSymbolP; //columna del char a leer
-        String process = ""; //cadena con todo el procesamiento
-        Character lamda = '$';
-        boolean reject = true;
+        String process = "Cadena: "+ string + "\n" + "Salida:"; //cadena con todo el procesamiento
+        Character lamda = '$'; //caracter para comparar
+        boolean reject = true; 
         String restore;
         actualState = this.initialState;
         this.stack = new Stack<>();
+        
         while (!string.isEmpty() && reject) {
             actualStateP = this.getRow(actualState);
             actualSymbol = Character.toString(string.charAt(0));
@@ -206,14 +213,14 @@ public class AFPD extends AFP {
             } else {
                 reject = false;
                 if (this.stack.isEmpty()) {
-                    process = process.concat("[$]) -> rejected");
+                    process = process.concat("$) -> rejected");
                 } else {
                     process = process.concat(returnStackasString() + ") -> rejected");
                 }
             }
         }
         if (this.acceptanceStates.contains(actualState) && this.stack.empty() && reject) {
-            process = process.concat("(" + actualState + "," + " $, [$]) -> accepted");
+            process = process.concat("(" + actualState + "," + " $, $) -> accepted");
             if (print) {
                 return process;
             } else {
@@ -243,11 +250,14 @@ public class AFPD extends AFP {
         BufferedWriter bw = new BufferedWriter(fw);
         
         for(String actual : stringList){
-            line = processStringR(actual, print);
+            line = processStringR (actual, print);
+            if(print){
+                System.out.println(line);
+            }
             if(line.contains("accepted")){
-                bw.write(line.concat(" Yes \n\n"));;
+                bw.write(line.concat("\nYes \n\n"));;
             }else{
-                bw.write(line.concat("No \n\n"));;
+                bw.write(line.concat("\nNo \n\n"));;
             }
         }
         

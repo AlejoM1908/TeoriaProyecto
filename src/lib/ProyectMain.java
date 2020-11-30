@@ -25,13 +25,13 @@ public class ProyectMain {
         }
         */
         AFPD test = new AFPD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD4.txt");
-        test.processStringWithDetails("ababaa");
+        //test.processStringWithDetails("ababaa");
         
-        /*try {
+        try {
             test.processStringList(Arrays.asList("aaaabb", "abb", "aabb"), "TestAFPD.txt", true);
         } catch (IOException ex) {
             Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
 
     }
 }
