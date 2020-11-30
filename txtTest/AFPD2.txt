@@ -1,5 +1,6 @@
 #alphabet
 a-b
+$
 #states
 q0
 q1
@@ -12,7 +13,7 @@ q2
 #firstStackAlphabet
 A
 #transitions
-q0:a:$>q0:A
+q0:a:$>q1:A
 q1:$:$>q0:A
 q0:b:A>q2:$
 q2:b:A>q2:$
