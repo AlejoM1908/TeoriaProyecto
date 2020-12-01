@@ -265,4 +265,46 @@ public class AFPD extends AFP {
         
     }
 
+    public AFPD cartesianProductAFD(AFD automatonAFD) {
+        AFPD returnAFPD;
+        List<Character> cartesianAlphabet = new ArrayList<>();
+        List<String> cartesianStatesList = new ArrayList<>();
+        String cartesianInitialState;
+        List<String> cartesianAcceptanceStates = new ArrayList<>();
+        List<Character> cartesianStackAlphabet;
+        ArrayList<TransitionModel>[][] cartesianDelta;
+        Stack<Character> cartesianStack = new Stack<>();
+
+        if (!automatonAFD.getAlphabet().toString().equals(this.getAlphabet().toString())) {
+            System.out.println("Los automatas no tiene el mismo alfabeto, no se puede hacer producto cartesiano");
+            return null;
+        } else {
+            cartesianAlphabet = this.getAlphabet();
+            cartesianInitialState = (automatonAFD.getInitialState() + "," + this.getInitialState());
+            cartesianStackAlphabet = this.getStackAlphabet();
+            
+            for (int i = 0; i < this.getStatesList().size(); i++) {
+                for (int j = 0; j < automatonAFD.getStatesList().size(); j++) {
+                    cartesianStatesList.add((this.getStatesList().get(i) + "," + automatonAFD.getStatesList().get(j)));
+                }
+            }
+
+            for (int i = 0; i < this.getAcceptanceStates().size(); i++) {
+                for (int j = 0; j < automatonAFD.getAcceptanceStates().size(); j++) {
+                    cartesianAcceptanceStates.add((this.getAcceptanceStates().get(i) + "," + automatonAFD.getAcceptanceStates().get(j)));
+                }
+            }
+            
+            cartesianDelta = new ArrayList[cartesianStatesList.size()][cartesianAlphabet.size()];
+            for (int i = 0; i < cartesianStatesList.size(); i++) {
+                for (int j = 0; j < cartesianAlphabet.size(); j++) {
+                    cartesianDelta[i][j] = new ArrayList<>();
+                }
+            }
+            
+            
+
+        }
+        return null;
+    }
 }
