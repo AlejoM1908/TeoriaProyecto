@@ -6,12 +6,12 @@ class test{
     public static void main(String[] args) {
         AF2P test = new AF2P("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AF2P.msm");
 
-        LinkedList<String> processings = test.showProcessing("c");
+        LinkedList<String> strings = new LinkedList<>();
+        strings.add("abc");
+        strings.add("abbc");
+        strings.add("aaabbbccc");
+        strings.add("aaabbbcc");
 
-        for(String processing: processings){
-            System.out.println(processing);
-        }
-
-        System.out.println("\n" + test.toString());
+        test.processStringList(strings, "C:\\Users\\danie\\Desktop\\prueba AF2P", "testing", false);
     }
 }

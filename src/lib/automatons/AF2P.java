@@ -1,6 +1,5 @@
 //Java imports
 package lib.automatons;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.Stack;
 
 //Proyect imports
 import lib.App.ArchiveReader;
+import lib.App.ArchiveWriter;
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
 
@@ -16,6 +16,7 @@ public class AF2P extends AF{
     protected List<Character> firstStackAlphabet;
     protected List<Character> secondStackAlphabet;
     protected Stack<Character> firstStack, secondStack;
+    private ArchiveWriter archiveWriter = new ArchiveWriter();
 
     /**
      * Contructor de la clase que recibe el path al documento que contiene
@@ -65,9 +66,10 @@ public class AF2P extends AF{
     /**
      * Función que permite modificar el contenido de la pila dada
      * @param stack
-     * @param stackActtion
+     * @param stackCharacter
+     * @param stackAction
      */
-    public String modifyStack(String stack, char stackCharacter, char stackAction ){
+    private String modifyStack(String stack, char stackCharacter, char stackAction ){
         try{
             if (stackCharacter == '$' && stackAction != '$'){
                 stack = stack.concat(String.valueOf(stackAction));
@@ -102,7 +104,15 @@ public class AF2P extends AF{
         }
     }
 
-    public LinkedList<String> recursiveProcessing(String string, TransitionModel operation, String stackOne, String stackTwo){
+    /**
+     * Función que permite procesar recursivamente una cadena y retorna los procesamientos completos posibles
+     * @param string
+     * @param operation
+     * @param stackOne
+     * @param stackTwo
+     * @return
+     */
+    private LinkedList<String> recursiveProcessing(String string, TransitionModel operation, String stackOne, String stackTwo){
         LinkedList<String> result = new LinkedList<>();
 
         if (operation == null){
@@ -211,7 +221,12 @@ public class AF2P extends AF{
         return result;
     }
 
-    public LinkedList<String> showProcessing(String string){
+    /**
+     * Función que retorna una lista con todos los procesamientos posibles de una cadena
+     * @param string
+     * @return
+     */
+    private LinkedList<String> showProcessing(String string){
         LinkedList<String> result = new LinkedList<>();
 
         if (string == null || string.compareTo("") == 0){
@@ -261,6 +276,158 @@ public class AF2P extends AF{
         return result;
     }
 
+    /**
+     * Función que retorna si una cadena es aceptada o no
+     * @param string
+     * @return
+     */
+    public boolean isAccepted(String string){
+        LinkedList<String> processings = showProcessing(string);
+
+        for (String processing: processings){
+            String[] processingCheck = processing.split(">>>|>>");
+
+            for (int i = 0; i<processingCheck.length; i++){
+                if (processingCheck[i].compareTo("accepted") == 0)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public LinkedList<String> detailedProcessing(String string, boolean consolePrint){
+        LinkedList<String> processings = showProcessing(string);
+        LinkedList<String> result = new LinkedList<>();
+
+        for (String processing: processings){
+            String[] processingCheck = processing.split(">>>|>>");
+
+            for (String check: processingCheck) {
+                if (check.compareTo("accepted") == 0)
+                    result.add(processing);
+
+                    if (consolePrint)
+                        System.out.println(processing);
+
+                    return result;
+            }
+        }
+
+        if (consolePrint){
+            for (String nonAccepted: processings){
+                System.out.println(nonAccepted);
+            }
+        }
+
+        return processings;
+    }
+
+    public int completeDetailedProcessing(String string, String path, String fileName, boolean consolePrint){
+        LinkedList<String> processings = showProcessing(string);
+        LinkedList<String> accepted = new LinkedList<>();
+        LinkedList<String> notAccepted = new LinkedList<>();
+
+        for (String processing: processings){
+            String[] processingCheck = processing.split(">>>|>>");
+
+            for (String check: processingCheck){
+                if (check.compareTo("accepted") == 0)
+                    accepted.add(processing);
+                else if (check.compareTo("notAccepted") == 0 || check.compareTo("aborted") == 0)
+                    notAccepted.add(processing);
+            }
+        }
+
+        if (consolePrint){
+
+            System.out.println("== Procesamientos aceptados ==");
+
+            if (accepted.size() == 0)
+                System.out.println("");
+            else{
+                for (String acceptedString: accepted){
+                    System.out.println(acceptedString);
+                }
+            }
+
+            System.out.println("== Procesamientos no aceptados ==");
+
+            if (notAccepted.size() == 0)
+                System.out.println("");
+            else{
+                for (String notAcceptedString: notAccepted){
+                    System.out.println(notAcceptedString);
+                }
+            }
+        }
+
+        archiveWriter.writeProcessings(accepted, path + "\\" + fileName + "AceptadasAF2P.txt");
+        archiveWriter.writeProcessings(notAccepted, path + "\\" + fileName + "RechazadasAF2P.txt");
+
+        return processings.size();
+    }
+
+    public void processStringList(LinkedList<String> strings, String path, String fileName, boolean consolePrint){
+        LinkedList<String> processings;
+        LinkedList<String> acceptedFinal = new LinkedList<>();
+        LinkedList<String> notAcceptedFinal = new LinkedList<>();
+        LinkedList<String> accepted;
+        LinkedList<String> notAccepted;
+        int stringNumber = 0;
+
+        for (String string: strings){
+            processings = showProcessing(string);
+            acceptedFinal.add("Procesamientos String " + stringNumber +"\n");
+            notAcceptedFinal.add("Procesamientos String " + stringNumber +"\n");
+            accepted = new LinkedList<>();
+            notAccepted = new LinkedList<>();
+
+            for (String processing: processings){
+                String[] processingCheck = processing.split(">>>|>>");
+                
+                for (String check: processingCheck){
+                    if (check.compareTo("accepted") == 0){
+                        accepted.add(processing);
+                        acceptedFinal.add(processing);
+                    }
+                    else if (check.compareTo("notAccepted") == 0 || check.compareTo("aborted") == 0){
+                        notAccepted.add(processing);
+                        notAcceptedFinal.add(processing);
+                    }
+                }
+            }
+
+            if (consolePrint){
+                System.out.println("== Procesamientos aceptados String " + stringNumber +"==");
+
+                if (accepted.size() == 0)
+                    System.out.println("");
+                else{
+                    for (String acceptedString: accepted){
+                        System.out.println(acceptedString);
+                    }
+                }
+
+                System.out.println("== Procesamientos no aceptados String " + stringNumber +"==");
+
+                if (notAccepted.size() == 0)
+                    System.out.println("");
+                else{
+                    for (String notAcceptedString: notAccepted){
+                        System.out.println(notAcceptedString);
+                    }
+                }
+            }
+            stringNumber++;
+        }
+        archiveWriter.writeProcessings(acceptedFinal, path + "\\" + fileName + "AceptadasAF2P.txt");
+        archiveWriter.writeProcessings(notAcceptedFinal, path + "\\" + fileName + "RechazadasAF2P.txt");
+    }
+
+    /**
+     * Función que retorna el documento de inicialización del automata
+     */
     public String toString(){
         return new AutomatonModel(alphabet, statesList, initialState, acceptanceStates, transitionFunction, firstStackAlphabet, secondStackAlphabet).toString();
     }
