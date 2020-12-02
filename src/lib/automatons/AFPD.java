@@ -24,6 +24,12 @@ public class AFPD extends AFP {
         initializeAFPD();
     }
 
+    public AFPD(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState,
+            ArrayList<String> acceptanceStates, List<Character> stackAlphabet, ArrayList<TransitionModel>[][] delta) {
+        super(alphabet, statesList, initialState, acceptanceStates, stackAlphabet);
+        this.delta = delta;
+    }
+
     public void initializeDelta(int sizeOfStates, int sizeofSigma) {
         this.delta = new ArrayList[sizeOfStates][sizeofSigma];
         for (int i = 0; i < sizeOfStates; i++) {
@@ -104,44 +110,44 @@ public class AFPD extends AFP {
     }
 
     public void modifyStack(String operation, Character parameter) {
-        
+
     }
 
     public String returnStackasString() {
-        Object [] array = this.stack.toArray();
+        Object[] array = this.stack.toArray();
         String stack = "";
-        for (int i = array.length-1; i >= 0; i--) {
+        for (int i = array.length - 1; i >= 0; i--) {
             stack = stack.concat(array[i].toString());
-            
+
         }
         return stack;
     }
 
-    public boolean processString(String string){
+    public boolean processString(String string) {
         string = processStringR(string, false);
-        if(string.equals("accepted")){
+        if (string.equals("accepted")) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    public void processStringWithDetails(String string){
+
+    public void processStringWithDetails(String string) {
         System.out.println(processStringR(string, true));
     }
-    
+
     public String processStringR(String string, boolean print) {
         String actualState;// este es el estado actual
         int actualStateP;//fila del estado actual
         String actualSymbol; //char a leer
         int actualSymbolP; //columna del char a leer
-        String process = "Cadena: "+ string + "\n" + "Salida:"; //cadena con todo el procesamiento
+        String process = "Cadena: " + string + "\n" + "Salida:"; //cadena con todo el procesamiento
         Character lamda = '$'; //caracter para comparar
-        boolean reject = true; 
+        boolean reject = true;
         String restore;
         actualState = this.initialState;
         this.stack = new Stack<>();
-        
+
         while (!string.isEmpty() && reject) {
             actualStateP = this.getRow(actualState);
             actualSymbol = Character.toString(string.charAt(0));
@@ -228,8 +234,9 @@ public class AFPD extends AFP {
             }
         } else {
             if (print) {
-                if(string.isEmpty() && reject){
+                if (string.isEmpty() && reject) {
                     process = process.concat("(" + actualState + "," + " $, " + returnStackasString() + ") -> rejected");
+                    System.out.println("Puta Vida");
                 }
                 return process;
             } else {
@@ -238,51 +245,55 @@ public class AFPD extends AFP {
         }
 
     }
-    
-    public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException{
+
+    public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException {
         File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" + fileName);
         String line;
         if (!file.exists()) {
             file.createNewFile();
         }
-        
+
         FileWriter fw = new FileWriter(file);
         BufferedWriter bw = new BufferedWriter(fw);
-        
-        for(String actual : stringList){
-            line = processStringR (actual, print);
-            if(print){
+
+        for (String actual : stringList) {
+            line = processStringR(actual, print);
+            if (print) {
                 System.out.println(line);
             }
-            if(line.contains("accepted")){
+            if (line.contains("accepted")) {
                 bw.write(line.concat("\nYes \n\n"));;
-            }else{
+            } else {
                 bw.write(line.concat("\nNo \n\n"));;
             }
         }
-        
+
         bw.close();
-        
+
     }
 
     public AFPD cartesianProductAFD(AFD automatonAFD) {
         AFPD returnAFPD;
-        List<Character> cartesianAlphabet = new ArrayList<>();
-        List<String> cartesianStatesList = new ArrayList<>();
+        Character lamda = '$'; //caracter para comparar
+        ArrayList<Character> cartesianAlphabet = new ArrayList<>();
+        ArrayList<String> cartesianStatesList = new ArrayList<>();
         String cartesianInitialState;
-        List<String> cartesianAcceptanceStates = new ArrayList<>();
+        ArrayList<String> cartesianAcceptanceStates = new ArrayList<>();
         List<Character> cartesianStackAlphabet;
         ArrayList<TransitionModel>[][] cartesianDelta;
         Stack<Character> cartesianStack = new Stack<>();
+        List<Character> auxAlphabet = new ArrayList<>(this.getAlphabet());
+        auxAlphabet.remove(auxAlphabet.indexOf(lamda));
 
-        if (!automatonAFD.getAlphabet().toString().equals(this.getAlphabet().toString())) {
+        //Verifica si los automatas tienen el mismo alfabeto para realizar el producto cartesiano
+        if (!automatonAFD.getAlphabet().toString().equals(auxAlphabet.toString())) {
             System.out.println("Los automatas no tiene el mismo alfabeto, no se puede hacer producto cartesiano");
             return null;
         } else {
-            cartesianAlphabet = this.getAlphabet();
+            cartesianAlphabet = (ArrayList<Character>) this.getAlphabet();
             cartesianInitialState = (automatonAFD.getInitialState() + "," + this.getInitialState());
             cartesianStackAlphabet = this.getStackAlphabet();
-            
+
             for (int i = 0; i < this.getStatesList().size(); i++) {
                 for (int j = 0; j < automatonAFD.getStatesList().size(); j++) {
                     cartesianStatesList.add((this.getStatesList().get(i) + "," + automatonAFD.getStatesList().get(j)));
@@ -294,17 +305,54 @@ public class AFPD extends AFP {
                     cartesianAcceptanceStates.add((this.getAcceptanceStates().get(i) + "," + automatonAFD.getAcceptanceStates().get(j)));
                 }
             }
-            
+
+            //Ciclo que construye la matriz que almacena la funcion Delta
             cartesianDelta = new ArrayList[cartesianStatesList.size()][cartesianAlphabet.size()];
             for (int i = 0; i < cartesianStatesList.size(); i++) {
                 for (int j = 0; j < cartesianAlphabet.size(); j++) {
                     cartesianDelta[i][j] = new ArrayList<>();
                 }
             }
-            
-            
+
+            //Ciclo que llena la funcion delta
+            for (int i = 0; i < cartesianStatesList.size(); i++) {
+                for (int j = 0; j < cartesianAlphabet.size(); j++) {
+                    String[] currentCartesianState = cartesianStatesList.get(i).split(",");
+                    String afpdState = currentCartesianState[0];
+                    String afdState = currentCartesianState[1];
+                    Character currentSymbolofCartesianAlfabet = cartesianAlphabet.get(j);
+                    int currentAFDStateP = automatonAFD.getRow(afdState);
+                    int currentAFPDStateP = this.getRow(afpdState);
+                    int currentAFDSymbolP;
+                    int currentAFPDSymbolP;
+                    TransitionModel newTransModel;
+                    if (currentSymbolofCartesianAlfabet.equals(lamda)) {
+                        currentAFPDSymbolP = this.getColumn(Character.toString(currentSymbolofCartesianAlfabet));
+                        if (!this.getDelta()[currentAFPDStateP][currentAFPDSymbolP].isEmpty()) {
+                            for (TransitionModel l : this.getDelta()[currentAFPDStateP][currentAFPDSymbolP]) {
+                                newTransModel = new TransitionModel(cartesianStatesList.get(i), currentSymbolofCartesianAlfabet,
+                                        l.firstStackCharacter(), (l.transitionState() + "," + afdState), l.firstStackAction());
+                                cartesianDelta[i][j].add(newTransModel);
+                            }
+                        }
+                    } else {
+                        currentAFPDSymbolP = this.getColumn(Character.toString(currentSymbolofCartesianAlfabet));
+                        currentAFDSymbolP = automatonAFD.getColumn(Character.toString(currentSymbolofCartesianAlfabet));
+                        if (!this.getDelta()[currentAFPDStateP][currentAFPDSymbolP].isEmpty() && !automatonAFD.getDelta()[currentAFDStateP][currentAFDSymbolP].isEmpty()) {
+                            for (TransitionModel l : this.getDelta()[currentAFPDStateP][currentAFPDSymbolP]) {
+                                newTransModel = new TransitionModel(cartesianStatesList.get(i), currentSymbolofCartesianAlfabet,
+                                        l.firstStackCharacter(), (l.transitionState() + "," + automatonAFD.getDelta()[currentAFDStateP][currentAFDSymbolP].get(0)), l.firstStackAction());
+                                cartesianDelta[i][j].add(newTransModel);
+                            }
+                        }
+                    }
+                }
+            }
+
+            returnAFPD = new AFPD(cartesianAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, cartesianStackAlphabet,
+                    cartesianDelta);
 
         }
-        return null;
+        return returnAFPD;
     }
 }
