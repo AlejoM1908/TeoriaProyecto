@@ -27,6 +27,15 @@ public class AutomatonModel {
     }
 
     public String toString(){
+        if (this._alphabet.contains('$'))
+            this._alphabet.remove((Character)'$');
+
+        if (this._firstStackAlphabet.contains('$'))
+            this._firstStackAlphabet.remove((Character)'$');
+
+        if (this._secondStackAlphabet.contains('$'))
+            this._secondStackAlphabet.remove((Character)'$');
+
         String[] alphabet = this._alphabet.toString().split("\\[|,|\\]| ");
         String[] statesList = this._statesList.toString().split("\\[|,|\\]| ");
         String[] acceptanceStates = this._acceptanceStates.toString().split("\\[|,|\\]| ");
@@ -39,7 +48,7 @@ public class AutomatonModel {
             if (s.compareTo("") != 0) resultString += s + "\n";
         }
 
-        resultString += "states\n";
+        resultString += "#states\n";
         for (String s: statesList){
             if (s.compareTo("") != 0) resultString += s + "\n";
         }

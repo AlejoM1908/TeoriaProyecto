@@ -197,6 +197,9 @@ public class ArchiveReader {
                                     if (dividedString.length == 3) {
                                         transitionState = dividedString[2];
 
+                                        if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
+
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
                                                 transitionFunction.put(currentState,
@@ -213,6 +216,9 @@ public class ArchiveReader {
                                         firstStackCharacter = dividedString[2];
                                         transitionState = dividedString[3];
                                         firstStackAction = dividedString[4];
+
+                                        if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
 
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
@@ -240,6 +246,9 @@ public class ArchiveReader {
                                         transitionState = dividedString[4];
                                         firstStackAction = dividedString[5];
                                         secondStackAction = dividedString[6];
+
+                                        if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
 
                                         if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                             if (!transitionFunction.containsKey(currentState)) {
@@ -278,6 +287,9 @@ public class ArchiveReader {
                                 if (dividedString.length == 3) {
                                     transitionState = dividedString[2];
 
+                                    if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
+
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
                                             transitionFunction.put(currentState,
@@ -294,6 +306,9 @@ public class ArchiveReader {
                                     firstStackCharacter = dividedString[2];
                                     transitionState = dividedString[3];
                                     firstStackAction = dividedString[4];
+
+                                    if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
 
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
@@ -320,6 +335,9 @@ public class ArchiveReader {
                                     transitionState = dividedString[4];
                                     firstStackAction = dividedString[5];
                                     secondStackAction = dividedString[6];
+
+                                    if (transitionChar == '$' && !alphabet.contains('$'))
+                                            alphabet.add('$');
 
                                     if (statesList.contains(currentState) && alphabet.contains(transitionChar)) {
                                         if (!transitionFunction.containsKey(currentState)) {
