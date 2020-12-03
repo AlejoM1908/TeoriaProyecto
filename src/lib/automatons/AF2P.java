@@ -296,6 +296,12 @@ public class AF2P extends AF{
         return false;
     }
 
+    /**
+     * Función que retorna el procesamiento detallado de una cadena y los imprime a la consola
+     * @param string
+     * @param consolePrint
+     * @return
+     */
     public LinkedList<String> detailedProcessing(String string, boolean consolePrint){
         LinkedList<String> processings = showProcessing(string);
         LinkedList<String> result = new LinkedList<>();
@@ -323,6 +329,14 @@ public class AF2P extends AF{
         return processings;
     }
 
+    /**
+     * Función que regresa el procesamiento detallado a una carpeta escogida y al la consola
+     * @param string
+     * @param path
+     * @param fileName
+     * @param consolePrint
+     * @return
+     */
     public int completeDetailedProcessing(String string, String path, String fileName, boolean consolePrint){
         LinkedList<String> processings = showProcessing(string);
         LinkedList<String> accepted = new LinkedList<>();
@@ -368,6 +382,13 @@ public class AF2P extends AF{
         return processings.size();
     }
 
+    /**
+     * Función que procesa una lista de cadenas
+     * @param strings
+     * @param path
+     * @param fileName
+     * @param consolePrint
+     */
     public void processStringList(LinkedList<String> strings, String path, String fileName, boolean consolePrint){
         LinkedList<String> processings;
         LinkedList<String> acceptedFinal = new LinkedList<>();
@@ -401,6 +422,7 @@ public class AF2P extends AF{
             if (consolePrint){
                 System.out.println("== Procesamientos aceptados String " + stringNumber +"==");
 
+                System.out.println(string);
                 if (accepted.size() == 0)
                     System.out.println("");
                 else{
@@ -418,7 +440,17 @@ public class AF2P extends AF{
                         System.out.println(notAcceptedString);
                     }
                 }
+
+                System.out.println("Número de procesamientos: " + processings.size());
+                System.out.println("Número de procesamientos Aceptados: " + accepted.size());
+                System.out.println("Número de procesamientos No Aceptados: " + notAccepted.size());
+
+                if (accepted.size() > 0)
+                    System.out.println("La cadena fue acepatada");
+                else
+                    System.out.println("La cadena no fue aceptada");
             }
+
             stringNumber++;
         }
         archiveWriter.writeProcessings(acceptedFinal, path + "\\" + fileName + "AceptadasAF2P.txt");
