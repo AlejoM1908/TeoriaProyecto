@@ -81,8 +81,7 @@ public class AFPN extends AF {
             return result;
         }        
         
-        String newStack = modifyStack(stack,operation.firstStackCharacter().charAt(0),operation.firstStackAction().charAt(0)
-        );
+        String newStack = modifyStack(stack,operation.firstStackCharacter().charAt(0),operation.firstStackAction().charAt(0));
         if(stack.compareTo(newStack) == 0 && (operation.firstStackCharacter().charAt(0) != '$' && operation.firstStackAction().charAt(0) != '$')){
             result.add(">>aborted");
             return result; 
@@ -171,6 +170,11 @@ public class AFPN extends AF {
         }
         
         options = this.transitionFunction.get(this.initialState).get('$');
+        
+        if(options == null){
+            result.add(">>aborted");
+            return result;
+        }
         
         for(TransitionModel op: options){
             LinkedList<String> value = procedure(string.substring(1,string.length()),op,"");
@@ -320,7 +324,7 @@ public class AFPN extends AF {
     }
     
     public String toString(){
-        return new AutomatonModel(alphabet,statesList, initialState, acceptanceStates, transitionFunction, stackAlphabet ,null).toString();
+        return new AutomatonModel(alphabet,statesList, initialState, acceptanceStates, transitionFunction, stackAlphabet ,null).tostring();
     }
     
 }
