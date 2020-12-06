@@ -319,8 +319,10 @@ public class AFPN extends AF {
             stringNum++;
         }
         
-        //archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
-        //archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        /*
+        archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
+        archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        */
     }
     
     public String toString(){
