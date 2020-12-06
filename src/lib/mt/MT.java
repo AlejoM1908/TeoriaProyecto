@@ -56,6 +56,80 @@ public class MT {
 
     }
 
+    public boolean Run(String input, boolean silentmode){
+        CurrentState = StartState;
+        Tape = input;
+
+        while(!CurrentState.equals(AcceptState) && !CurrentState.equals(RejectState))
+        {
+            boolean foundTransition = false;
+            Transition CurrentTransition = null;
+
+            if (silentmode == false)
+            {
+                if (CurrentSymbol>0)
+                {
+                    System.out.println(Tape.substring(0, CurrentSymbol) + " " + CurrentState + " " + Tape.substring(CurrentSymbol));
+                }
+                else
+                {
+                    System.out.println(" " + CurrentState + " " + Tape.substring(CurrentSymbol));
+                }
+            }
+
+        Iterator<Transition> TransitionsIterator = TransitionSpace.iterator();
+        while ( TransitionsIterator.hasNext() && foundTransition == false)
+        {
+            Transition nextTransition = TransitionsIterator.next();
+            if (nextTransition.readState.equals(CurrentState) && nextTransition.readSymbol == Tape.charAt(CurrentSymbol))
+            {
+                foundTransition = true;
+                CurrentTransition = nextTransition;
+            }						
+        }	
+
+            if (foundTransition == false)
+            {
+                System.err.println ("No existe una transición válida para esta fase. Estado = " + CurrentState + " , símbolo = " + Tape.charAt(CurrentSymbol));
+                return false;
+            }
+            else
+            {
+                CurrentState = CurrentTransition.writeState;
+                char[] tempTape = Tape.toCharArray(); 				
+                tempTape[CurrentSymbol] = CurrentTransition.writeSymbol;
+                Tape =  new String(tempTape);
+                if(CurrentTransition.moveDirection==true)
+                {
+                    CurrentSymbol++;
+                }
+                else
+                {
+                    CurrentSymbol--;
+                }
+
+                if (CurrentSymbol < 0)
+                    CurrentSymbol = 0;
+
+                while (Tape.length() <= CurrentSymbol)
+                {
+                    Tape = Tape.concat("_");
+                }
+
+
+            }			
+        }
+
+        if (CurrentState.equals(AcceptState))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public boolean addState(String newState)
     {
         if (StateSpace.contains(newState))
