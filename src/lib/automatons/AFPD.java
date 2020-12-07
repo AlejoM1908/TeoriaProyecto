@@ -114,6 +114,9 @@ public class AFPD extends AFP {
     }
 
     public String returnStackasString() {
+        if(this.stack.isEmpty()){
+            return "$";
+        }
         Object[] array = this.stack.toArray();
         String stack = "";
         for (int i = array.length - 1; i >= 0; i--) {
@@ -160,7 +163,7 @@ public class AFPD extends AFP {
             }
             process = process.concat("(" + actualState + "," + actualSymbol + string + ", "); //+ ")->");
             actualSymbolP = this.getColumn(actualSymbol);
-            if (!this.getDelta()[actualStateP][actualSymbolP].isEmpty()) {
+                if (!this.getDelta()[actualStateP][actualSymbolP].isEmpty()) {
                 for (TransitionModel l : this.getDelta()[actualStateP][actualSymbolP]) {
                     if (l.firstStackCharacter().charAt(0) == lamda) {
                         if (l.firstStackAction().charAt(0) != lamda) {
@@ -170,6 +173,8 @@ public class AFPD extends AFP {
                                 process = process.concat(returnStackasString() + ")->");
                             }
                             this.stack.push(l.firstStackAction().charAt(0));
+                        }else{
+                            process = process.concat(returnStackasString()  + ")->");
                         }
                         actualState = l.transitionState();
                         break;
@@ -185,6 +190,10 @@ public class AFPD extends AFP {
                             actualState = l.transitionState();
                             break;
                         }
+                    }else{
+                        reject = false;
+                        process = process.concat("$) -> rejected");
+                        //break;
                     }
                 }
             } else if (!this.getDelta()[actualStateP][getColumn("$")].isEmpty()) {
@@ -197,6 +206,8 @@ public class AFPD extends AFP {
                                 process = process.concat(returnStackasString() + ")->");
                             }
                             this.stack.push(l.firstStackAction().charAt(0));
+                        }else{
+                            process = process.concat(returnStackasString()  + ")->");
                         }
                         actualState = l.transitionState();
                         string = restore;
@@ -214,6 +225,10 @@ public class AFPD extends AFP {
                             actualState = l.transitionState();
                             break;
                         }
+                    }else{
+                        reject = false;
+                        process = process.concat("$) -> rejected");
+                        //break;
                     }
                 }
             } else {
@@ -236,7 +251,7 @@ public class AFPD extends AFP {
             if (print) {
                 if (string.isEmpty() && reject) {
                     process = process.concat("(" + actualState + "," + " $, " + returnStackasString() + ") -> rejected");
-                    System.out.println("Puta Vida");
+                    
                 }
                 return process;
             } else {
@@ -247,7 +262,7 @@ public class AFPD extends AFP {
     }
 
     public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException {
-        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" + fileName);
+        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" , fileName);
         String line;
         if (!file.exists()) {
             file.createNewFile();
@@ -354,5 +369,10 @@ public class AFPD extends AFP {
 
         }
         return returnAFPD;
+    }
+    
+    @Override
+    public String toString(){
+        return this.model.toString();
     }
 }

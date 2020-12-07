@@ -14,7 +14,7 @@ public class AF {
 	protected List<String> statesList;
 	protected String initialState;
 	protected List<String> acceptanceStates;
-	protected Map<String,Map<Character,TransitionModel>> transitionFunction;
+	protected Map<String,Map<Character,ArrayList<TransitionModel>>> transitionFunction;
 
 	/**
 	 * Constructor(alfabeto, lista de estados, estado inicial, estados de

@@ -102,7 +102,7 @@ public class AFD extends AF{
     }
     
     public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException{
-        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" + fileName);
+        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" , fileName);
         String line;
         if (!file.exists()) {
             file.createNewFile();
