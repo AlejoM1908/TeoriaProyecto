@@ -298,8 +298,12 @@ public class AFPD extends AFP {
         ArrayList<TransitionModel>[][] cartesianDelta;
         Stack<Character> cartesianStack = new Stack<>();
         List<Character> auxAlphabet = new ArrayList<>(this.getAlphabet());
-        auxAlphabet.remove(auxAlphabet.indexOf(lamda));
-
+        if(auxAlphabet.indexOf(lamda)==-1){
+            auxAlphabet = new ArrayList<>(this.getAlphabet());
+        }else{
+            auxAlphabet.remove(auxAlphabet.indexOf(lamda));
+        }
+        
         //Verifica si los automatas tienen el mismo alfabeto para realizar el producto cartesiano
         if (!automatonAFD.getAlphabet().toString().equals(auxAlphabet.toString())) {
             System.out.println("Los automatas no tiene el mismo alfabeto, no se puede hacer producto cartesiano");

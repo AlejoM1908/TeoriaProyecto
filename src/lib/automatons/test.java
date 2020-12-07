@@ -4,20 +4,27 @@ import java.util.LinkedList;
 
 class test{
     public static void main(String[] args) {
-        /*AF2P test = new AF2P("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AF2P.msm");
-
-        LinkedList<String> strings = new LinkedList<>();
-        strings.add("abc");
-        strings.add("abbc");
-        strings.add("aaabbbccc");
-        strings.add("aaabbbcc");
-
-        test.processStringList(strings, "C:\\Users\\danie\\Desktop\\prueba AF2P", "testing", false);*/
+        AFD prueba = new AFD("D:\\Personal\\Documentos\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFD.txt");
+        //System.out.println(prueba.toString());
         
-        AFPD test = new AFPD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD4.dpda");
-        test.processStringWithDetails("aabbaa");
-        
-        
-        //System.out.println(test.toString());
+        prueba.processString("aababbabbb", true);
+        /*
+        try {
+            prueba.processStringList(Arrays.asList("abab", "baba"), "Test.txt", true);
+        } catch (IOException ex) {
+            Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+        AFPD test = new AFPD("D:\\Personal\\Documentos\\NetBeansProjects\\ClonDelProyecto\\TeoriaProyecto\\txtTest\\AFPD4.dpda");
+        test.processStringWithDetails("aaabbbbbb");
+        AFPD testCartesian = test.cartesianProductAFD(prueba);
+        testCartesian.processStringWithDetails("aabb");
+        //System.out.println("Ayuda");
+        /*
+        try {
+            test.processStringList(Arrays.asList("aaaabb", "abb", "aabb"), "TestAFPD.txt", true);
+        } catch (IOException ex) {
+            Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
 }
