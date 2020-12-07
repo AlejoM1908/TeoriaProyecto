@@ -240,6 +240,8 @@ public class ArchiveReader {
                                                             firstStackCharacter, transitionState, firstStackAction));
                                             }
                                         }
+                                       
+                                    
                                     } else if (dividedString.length == 7) {
                                         firstStackCharacter = dividedString[2];
                                         secondStackCharacter = dividedString[3];

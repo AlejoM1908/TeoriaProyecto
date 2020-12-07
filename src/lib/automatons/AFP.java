@@ -2,7 +2,11 @@
 package lib.automatons;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
+import java.util.Stack;
+import lib.App.ArchiveReader;
+import lib.models.AutomatonModel;
+
 
 /**
  *
@@ -10,15 +14,30 @@ import java.util.Queue;
  */
 public class AFP extends AF {
     
-    protected Queue<Character> queuealphabet = new LinkedList();
-
-    //* @param queuealphabet alfabeto de la cola 
-            
-    public AFP(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState, ArrayList<String> acceptanceStates, Queue<Character> queuealphabet) {
-        super(alphabet, statesList, initialState, acceptanceStates);
-        this.queuealphabet = queuealphabet;
+    protected List<Character> stackAlphabet; //= new LinkedList();
+    protected Stack<Character> stack; //= new Stack<>();
+    
+    
+    public AFP(String documentName) {
+        AutomatonModel model = ArchiveReader.readAF(documentName);
+        this.statesList = model.statesList();
+        this.initialState = model.initialState();
+        this.alphabet = model.alphabet();
+        this.acceptanceStates = model.acceptanceStates();
+        this.stackAlphabet = model.firstStackAlphabet();
+        this.stack = new Stack<>();
     }
     
+    //* @param queuealphabet alfabeto de la cola 
+       
+    public AFP(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState, ArrayList<String> acceptanceStates, List<Character> stackAlphabet) {
+        super(alphabet, statesList, initialState, acceptanceStates);
+        this.stackAlphabet = stackAlphabet;
+        this.stack = new Stack<>();
+    }
+
+    
+    /*
     public void setQueueAlphabet(Queue<String> queuealphabet) {
 		for (String subSigma : queuealphabet) { // Por cada elemento
 		    if(subSigma.length()>1) { // Si es rango
@@ -37,5 +56,5 @@ public class AFP extends AF {
 		    }
 		}
 	}
-    
+    */
 }

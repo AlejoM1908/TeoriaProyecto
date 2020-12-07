@@ -10,9 +10,13 @@ import java.util.List;
 import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
 
+
 public class AFD extends AF{
+    
     private ArrayList<String>[][] delta;
     private AutomatonModel model;
+    //private ArrayList<String> limboStates;
+    //private ArrayList<String> inaccessibleStates = new ArrayList<>();
 
     public AFD(String path){
         this.model = ArchiveReader.readAF(path);
@@ -20,7 +24,6 @@ public class AFD extends AF{
         this.initialState = model.initialState();
         this.statesList = model.statesList();
         this.acceptanceStates = model.acceptanceStates();
-        this.transitionFunction = model.transitionFunction();
         initializeAutomaton();
     }
 
@@ -77,12 +80,13 @@ public class AFD extends AF{
         return delta;
     }
     
+
     public void initializeAutomaton(){
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
         
-        this.transitionFunction.values().stream().forEach((sMap) -> {
+        this.model.transitionFunction().values().stream().forEach((sMap) -> {
             sMap.values().stream().forEach((cMap)->{
-                this.delta[this.statesList.indexOf(cMap.actualState())][this.alphabet.indexOf(cMap.actualCharacter())].add(cMap.transitionState());
+                this.delta[this.statesList.indexOf(cMap.get(0).actualState())][this.alphabet.indexOf(cMap.get(0).actualCharacter())].add(cMap.get(0).transitionState());
             }
             );
         }
@@ -98,7 +102,7 @@ public class AFD extends AF{
     }
     
     public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException{
-        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" + fileName);
+        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" , fileName);
         String line;
         if (!file.exists()) {
             file.createNewFile();
@@ -132,9 +136,7 @@ public class AFD extends AF{
         process = "Cadena: "+string + "\n" + "Salida: \n";
         
         while (!string.isEmpty()) {
-            actualStateP = this.getRow(actualState);
-            actualSymbol = Character.toString(string.charAt(0));
-            
+            actualStateP = this.getRow(actualState);     
             actualSymbol = Character.toString(string.charAt(0));
             
             if (string.length() > 1) {

@@ -33,7 +33,7 @@ public class AF2P extends AF{
         this.acceptanceStates = model.acceptanceStates();
         this.firstStackAlphabet = model.firstStackAlphabet();
         this.secondStackAlphabet = model.secondStackAlphabet();
-        this.transitionFunction = model.transitionFunction();
+        //this.transitionFunction = model.transitionFunction();
 
         this.alphabet.add('$');
         this.firstStackAlphabet.add('$');
@@ -457,9 +457,6 @@ public class AF2P extends AF{
         archiveWriter.writeProcessings(notAcceptedFinal, path + "\\" + fileName + "RechazadasAF2P.txt");
     }
 
-    /**
-     * Función que retorna el documento de inicialización del automata
-     */
     public String toString(){
         return new AutomatonModel(alphabet, statesList, initialState, acceptanceStates, transitionFunction, firstStackAlphabet, secondStackAlphabet).toString();
     }

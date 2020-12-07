@@ -16,7 +16,7 @@ public class TransitionModel{
     }
 
     public TransitionModel(String actualState, char actualCharacter, String firstStackCharacter, 
-            String transitionState, String firstStackAction){
+        String transitionState, String firstStackAction){
         this._actualState = actualState;
         this._actualCharacter = actualCharacter;
         this._firstStackCharacter = firstStackCharacter;
@@ -25,8 +25,8 @@ public class TransitionModel{
     }
 
     public TransitionModel(String actualState, char actualCharacter, String firstStackCharacter, 
-            String secondStackCharacter, String transitionState, String firstStackAction, 
-            String secondStackAction){
+        String secondStackCharacter, String transitionState, String firstStackAction, 
+        String secondStackAction){
         this._actualState = actualState;
         this._actualCharacter = actualCharacter;
         this._firstStackCharacter = firstStackCharacter;
