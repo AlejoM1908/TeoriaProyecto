@@ -1,5 +1,5 @@
 package lib;
-
+<<<<<<< OURS
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,11 +12,12 @@ import lib.automatons.AF2P;
 import lib.automatons.AFD;
 import lib.automatons.AFPD;
 import lib.automatons.AFPN;
-
+=======
+>>>>>>> THEIRS
 
 public class ProyectMain {
     public static void main(String[] args){
-
+<<<<<<< OURS
         String string, path, fileName, shorcutProcess, shorcutAutomaton, absolutePath;
         absolutePath = System.getProperty("user.dir");
         shorcutProcess = "\\resultadosProcesamiento\\";
@@ -390,6 +391,8 @@ public class ProyectMain {
             Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
         }*/
 
+=======
+        
+>>>>>>> THEIRS
     }
 }
-

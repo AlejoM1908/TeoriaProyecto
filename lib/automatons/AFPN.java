@@ -1,6 +1,5 @@
 //Java imports
 package lib.automatons;
-
 //--------------------
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Stack;
 //--------------------
-import lib.App.ArchiveWriter;
+//import lib.App.ArchiveWriter;
 import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
@@ -17,7 +16,6 @@ public class AFPN extends AF {
 
     private List<Character> stackAlphabet;
     private Stack<Character> stack;
-    private ArchiveWriter archiveWritter = new ArchiveWriter();
         
     
     public AFPN(String path){
@@ -258,8 +256,8 @@ public class AFPN extends AF {
                 }
             }
         }
-        archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
-        archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        //archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
+        //archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
         return procedures.size();
     }
     
@@ -321,8 +319,8 @@ public class AFPN extends AF {
             stringNum++;
         }
         
-        archiveWritter.writeProcessings(aFinal, path + "\\" +fileName + "AcceptedAFNP.txt");
-        archiveWritter.writeProcessings(nFinal, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        //archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
+        //archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
     }
     
     public String toString(){

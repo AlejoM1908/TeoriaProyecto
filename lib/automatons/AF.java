@@ -1,7 +1,6 @@
 //Java imports
 package lib.automatons;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +33,7 @@ public class AF {
 		this.acceptanceStates = acceptanceStates;
 	}
 
-	
-        /**
+	/**
 	 * Constructor(documentName) de la clase para inicializar los atributos a partir
 	 * de un archivo cuyo formato es el mismo acordado por todo el curso y aprobado
 	 * por el docente (ver archivo \archivoEjemplo.txt).
@@ -50,10 +48,7 @@ public class AF {
 		this.acceptanceStates = af.acceptanceStates();
 	}
 
-        
-	
-        //56
-        /**
+	/**
 	 * Constructor de la clase para inicialzar los atributos sin ningun valor
 	 */
 	public AF() {
@@ -63,4 +58,3 @@ public class AF {
 		this.acceptanceStates = new ArrayList<>();
 	}
 }
-//74
