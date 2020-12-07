@@ -29,12 +29,13 @@ public class AFP extends AF {
     }
     
     //* @param queuealphabet alfabeto de la cola 
-    /*       
-    public AFP(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState, ArrayList<String> acceptanceStates, Queue<Character> queuealphabet) {
+       
+    public AFP(ArrayList<Character> alphabet, ArrayList<String> statesList, String initialState, ArrayList<String> acceptanceStates, List<Character> stackAlphabet) {
         super(alphabet, statesList, initialState, acceptanceStates);
-        this.queuealphabet = queuealphabet;
+        this.stackAlphabet = stackAlphabet;
+        this.stack = new Stack<>();
     }
-    */
+
     
     /*
     public void setQueueAlphabet(Queue<String> queuealphabet) {
