@@ -326,7 +326,7 @@ public class AFPN extends AF {
     }
     
     public String toString(){
-        return new AutomatonModel(alphabet,statesList, initialState, acceptanceStates, transitionFunction, stackAlphabet ,null).tostring();
+        return new AutomatonModel(alphabet,statesList, initialState, acceptanceStates, transitionFunction, stackAlphabet ,null).toString();
     }
     
 }
