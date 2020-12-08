@@ -87,7 +87,6 @@ public class AutomatonModel {
 
         return resultString;
     }
-    
     public String tostring(){
         String[] alphabet = this._alphabet.toString().split("\\[|,|\\]| ");
         String[] statesList = this._statesList.toString().split("\\[|,|\\]| ");

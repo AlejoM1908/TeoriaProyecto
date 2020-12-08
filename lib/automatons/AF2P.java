@@ -138,11 +138,11 @@ public class AF2P extends AF{
             return result;
         }
         
-        if(string.isEmpty() && acceptanceStates.contains(operation.transitionState()) && newStackOne.isEmpty() && newStackTwo.isEmpty()){
+        if(string.length() == 0 && acceptanceStates.contains(operation.transitionState()) && newStackOne.isEmpty() && newStackTwo.isEmpty()){
             result.add("(" + operation.transitionState() + ",$,$,$)>>accepted");
             return result;
         }
-        else if (string.isEmpty()){
+        else if (string.length() == 0){
             String resultString = "(" + operation.transitionState() + ",$,";
 
             if (newStackOne.isEmpty())
@@ -167,37 +167,39 @@ public class AF2P extends AF{
         char actualCharacter = string.charAt(0);
         ArrayList<TransitionModel> options = this.transitionFunction.get(operation.transitionState()).get(actualCharacter);
 
-        if (options != null){
-            for (TransitionModel option: options){
-                LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, newStackOne, newStackTwo);
-
-                for (String valueString: value){
-                    String resultString = "(" + option.transitionState() + "," + string + ",";
-
-                    if (newStackOne.compareTo("") == 0)
-                        resultString +=  "$,";
-                    else
-                        resultString += newStackOne + ",";
-
-                    if (newStackTwo.compareTo("") == 0)
-                        resultString += "$)->";
-                    else
-                        resultString += newStackTwo + ")->";
-
-                    result.add(resultString + valueString);
-                }
-            }
-        }
-
-        options = this.transitionFunction.get(operation.transitionState()).get('$');
-
         if (options == null){
             result.add(">>aborted");
             return result;
         }
 
         for (TransitionModel option: options){
-            LinkedList<String> value = recursiveProcessing(string, option, newStackOne, newStackTwo);
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, newStackOne, newStackTwo);
+
+            for (String valueString: value){
+                String resultString = "(" + option.transitionState() + "," + string + ",";
+
+                if (newStackOne.compareTo("") == 0)
+                    resultString +=  "$,";
+                else
+                    resultString += newStackOne + ",";
+
+                if (newStackTwo.compareTo("") == 0)
+                    resultString += "$)->";
+                else
+                    resultString += newStackTwo + ")->";
+
+                result.add(resultString + valueString);
+            }
+        }
+
+        options = this.transitionFunction.get(operation.transitionState()).get('$');
+
+        if (options == null){
+            return result;
+        }
+
+        for (TransitionModel option: options){
+            LinkedList<String> value = recursiveProcessing(string.substring(1,string.length()), option, newStackOne, newStackTwo);
 
             for (String valueString: value){
                 String resultString = "(" + option.transitionState() + "," + string + ",";
@@ -227,7 +229,7 @@ public class AF2P extends AF{
     private LinkedList<String> showProcessing(String string){
         LinkedList<String> result = new LinkedList<>();
 
-        if (string == null || string.isEmpty()){
+        if (string == null || string.compareTo("") == 0){
             if (this.acceptanceStates.contains(this.initialState))
                 result.add("(" + this.initialState + ",$,$,$)>>accepted");
             else

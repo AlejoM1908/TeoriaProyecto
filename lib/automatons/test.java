@@ -1,4 +1,5 @@
 package lib.automatons;
+
 import java.util.LinkedList;
 
 class test{
@@ -25,17 +26,5 @@ class test{
         } catch (IOException ex) {
             Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        AF2P test_02 = new AF2P("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AF2P_02.msm");
-
-        LinkedList<String> strings = new LinkedList<>();
-        strings.add("abc");
-        strings.add("abbc");
-        strings.add("aaabbbbbbccc");
-        strings.add("aaabbbcc");
-
-        System.out.println(test.toString());
-
-        test_02.processStringList(strings, "C:\\Users\\danie\\Desktop\\prueba AF2P", "testing", true);
-        //test.detailedProcessing("abc", true);
     }
 }
