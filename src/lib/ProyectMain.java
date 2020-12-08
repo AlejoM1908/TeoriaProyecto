@@ -215,7 +215,7 @@ public class ProyectMain {
                         switch(selection){
                             case 1:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 boolean acceptance = af2p.isAccepted(string);
                                 
                                 if (acceptance)
@@ -226,7 +226,7 @@ public class ProyectMain {
                                 break;
                             case 2:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 af2p.detailedProcessing(string, true);
                                 
                                 break;
