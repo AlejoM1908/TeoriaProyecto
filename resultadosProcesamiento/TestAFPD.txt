@@ -1,0 +1,12 @@
+Cadena: aaaabb
+Salida:(q0,aaaabb, $)->(q1,aaabb, X)->(q1,aabb, AX)->(q1,abb, AAX)->(q1,bb, AAAX)->(q1,b, AAX)->(q1, $, AX) -> rejected
+No 
+
+Cadena: abb
+Salida:(q0,abb, $)->(q1,bb, X)->(q0,b, $)->(q2, $, X) -> rejected
+No 
+
+Cadena: aabb
+Salida:(q0,aabb, $)->(q1,abb, X)->(q1,bb, AX)->(q1,b, X)->(q0, $, $) -> accepted
+Yes 
+
