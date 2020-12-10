@@ -12,20 +12,6 @@ import lib.automatons.AF2P;
 import lib.automatons.AFD;
 import lib.automatons.AFPD;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-//Proyect imports
-import lib.automatons.AF2P;
-import lib.automatons.AFD;
-import lib.automatons.AFPD;
-import lib.automatons.AFPN;
-
-
 public class ProyectMain {
     public static void main(String[] args){
         String string, path, fileName, shorcutProcess, shorcutAutomaton, absolutePath;
@@ -44,8 +30,10 @@ public class ProyectMain {
                 System.out.println("6. Máquina de turing - Modelo con cinta dividida en pistas");
                 System.out.println("7. Máquina de turing - Modelo con multiples cintas");
                 System.out.println("8. Máquina de turing - No determinista");
+                System.out.println("9. finalizar ejecución");
                 
                 int selection = scanner.nextInt();
+                scanner.nextLine();
                 
                 switch(selection){
                     case 1:
@@ -284,7 +272,7 @@ public class ProyectMain {
                         break;
                     case 4:
                         System.out.println("Por favor ingrese la ubicación del documento de inicialización");
-                        AF2P af2p = new AF2P(scanner.next());
+                        AF2P af2p = new AF2P(scanner.nextLine());
                         System.out.println("Se cargo el automata con la siguiente configuración:");
                         System.out.println(af2p.toString());
                         System.out.println("Que tipo de procesamiento desea ejecutar sobre el automata?");
@@ -312,9 +300,26 @@ public class ProyectMain {
                                 System.out.println("Ingrese la cadena que desea procesar");
                                 string = scanner.nextLine();
                                 af2p.detailedProcessing(string, true);
+                                acceptance = af2p.isAccepted(string);
+                                
+                                if (acceptance)
+                                    System.out.println("La cadena es acepatada");
+                                else
+                                    System.out.println("La cadena no es aceptada");
+                                System.out.println("");
+
+                                System.out.println("Ingrese la ruta de la carpeta donde desea guardar los procesamientos");
+                                path = scanner.nextLine();
+                                
+                                System.out.println("Ingrese el nombre de los archivos que desea");
+                                fileName = scanner.nextLine();
+                                
+                                af2p.completeDetailedProcessing(string, path, fileName, true);
+                                
+                                break;
+                            case 3:
                                 System.out.println("Ingrese la cadena que desea procesar");
                                 string = scanner.nextLine();
-                                System.out.println("");
                                 
                                 System.out.println("Ingrese la ruta de la carpeta donde desea guardar los procesamientos");
                                 path = scanner.nextLine();
@@ -366,6 +371,8 @@ public class ProyectMain {
                     case 8:
                         System.out.println("Lo lamentamos, de momento este automata no esta disponible.");
                         break;
+                    case 9: 
+                        return;
                     default:
                         System.out.println("La selección escogida no fue reconocida, intente nuevamente!");
                         break;
@@ -375,29 +382,7 @@ public class ProyectMain {
                 if (scanner.nextLine().compareTo("s") == 0)
                     return;
             }
-            /*
-            AFD prueba = new AFD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFD.txt");
-            System.out.println(prueba.toString());
-            prueba.processString("abab", true);
-            try {
-            prueba.processStringList(Arrays.asList("abab", "baba"), "Test.txt", true);
-            } catch (IOException ex) {
-            Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
         }
-        /*
-        AFPD test = new AFPD("D:\\Personal\\Documentos\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD2.txt");
-        test.processStringWithDetails("aaabbbbbb");
-        AFPD testCartesian = test.cartesianProductAFD(prueba);
-        testCartesian.processStringWithDetails("aabb");
-        //System.out.println("Ayuda");
-        /*
-        try {
-            test.processStringList(Arrays.asList("aaaabb", "abb", "aabb"), "TestAFPD.txt", true);
-        } catch (IOException ex) {
-            Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
     }
 }
 
