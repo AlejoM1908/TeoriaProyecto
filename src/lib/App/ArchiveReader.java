@@ -1,6 +1,5 @@
 //Java imports
 package lib.App;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//Proyect imports
 import lib.models.AutomatonModel;
 import lib.models.TransitionModel;
 
@@ -240,7 +240,6 @@ public class ArchiveReader {
                                                             firstStackCharacter, transitionState, firstStackAction));
                                             }
                                         }
-                                       
                                     
                                     } else if (dividedString.length == 7) {
                                         firstStackCharacter = dividedString[2];
@@ -332,6 +331,7 @@ public class ArchiveReader {
                                         }
                                     }
                                 } else if (dividedString.length == 7) {
+                                    
                                     firstStackCharacter = dividedString[2];
                                     secondStackCharacter = dividedString[3];
                                     transitionState = dividedString[4];
