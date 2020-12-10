@@ -165,13 +165,19 @@ public class ProyectMain {
                                 break;
                             case 4:
                                 System.out.println("Por favor ingrese el nombre del archivo para el AUTOMATA FINITO DETERMINISTA");
-                                AFD cartesianAFD = new AFD(absolutePath + shorcutAutomaton + scanner.next());
+                                AFD cartesianAFD = new AFD(absolutePath + shorcutAutomaton + scanner.nextLine());
                                 System.out.println("Por favor ingrese el nombre del archivo para el AUTOMATA FINITO CON PILA DETERMINISTA");
-                                AFPD cartesianAFPD = new AFPD(absolutePath + shorcutAutomaton + scanner.next());
+                                AFPD cartesianAFPD = new AFPD(absolutePath + shorcutAutomaton + scanner.nextLine());
                                 AFPD cartesianProduct = cartesianAFPD.cartesianProductAFD(cartesianAFD);
-                                int continuar;
-                                while (true) {
+                                boolean run;
+                                if(cartesianProduct==null){
+                                    run=false;
+                                }else{
                                     System.out.println("Producto cartesiano realizado con exito, que desea hacer");
+                                    run=true;
+                                }                               
+                                int continuar;
+                                while (run) {                                    
                                     System.out.println("1. Procesar y retornar solo si es aceptada o no");
                                     System.out.println("2. Procesar cadena con detalles retornando si es aceptada o no");
                                     selection = scanner.nextInt();
@@ -180,7 +186,7 @@ public class ProyectMain {
                                     switch (selection) {
                                         case 1:
                                             System.out.println("Ingrese la cadena que desea procesar");
-                                            string = scanner.next();
+                                            string = scanner.nextLine();
                                             boolean resultCartesian = cartesianProduct.processString(string);
                                             if (resultCartesian) {
                                                 System.out.println("La cadena es acepatada");
@@ -191,7 +197,7 @@ public class ProyectMain {
                                             break;
                                         case 2:
                                             System.out.println("Ingrese la cadena que desea procesar");
-                                            string = scanner.next();
+                                            string = scanner.nextLine();
                                             cartesianProduct.processStringWithDetails(string);
                                             break;
                                         default:
@@ -200,6 +206,7 @@ public class ProyectMain {
                                     System.out.println("Desea procesar mas cadenas?");
                                     System.out.println("Ingrese 1 para continuar, 0 para finalizar");
                                     continuar=scanner.nextInt();
+                                    scanner.nextLine();
                                     
                                     if(continuar==0)
                                         break;
