@@ -63,14 +63,14 @@ public class ProyectMain {
                         switch(selection){
                             case 1:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 afd.processString(string, false);
                                 
                                 
                                 break;
                             case 2:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 afd.processString(string, true);
                                 
                                 break;
@@ -120,7 +120,7 @@ public class ProyectMain {
                         switch(selection){
                             case 1:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 boolean result = afpd.processString(string);
                                 
                                 if (result)
@@ -132,7 +132,7 @@ public class ProyectMain {
                                 break;
                             case 2:
                                 System.out.println("Ingrese la cadena que desea procesar");
-                                string = scanner.next();
+                                string = scanner.nextLine();
                                 afpd.processStringWithDetails(string);
                                 
                                 break;
