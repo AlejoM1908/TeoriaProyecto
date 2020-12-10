@@ -75,15 +75,19 @@ public class AutomatonModel {
             }
         }
 
-        resultString += "#transitions\n";
-        for (Map.Entry<String, Map<Character,ArrayList<TransitionModel>>> entry1: this._transitionFunction.entrySet()){
-            for (Map.Entry<Character,ArrayList<TransitionModel>> entry2: entry1.getValue().entrySet()){
-                ArrayList<TransitionModel> value =  entry2.getValue();
-                for (TransitionModel transitionModel: value){
-                    resultString += transitionModel.toString() + "\n";
+        if (this._transitionFunction != null){
+            resultString += "#transitions\n";
+            for (Map.Entry<String, Map<Character,ArrayList<TransitionModel>>> entry1: this._transitionFunction.entrySet()){
+                for (Map.Entry<Character,ArrayList<TransitionModel>> entry2: entry1.getValue().entrySet()){
+                    ArrayList<TransitionModel> value =  entry2.getValue();
+                    for (TransitionModel transitionModel: value){
+                        resultString += transitionModel.toString() + "\n";
+                    }
                 }
             }
         }
+        else
+            resultString += "#transitions\n";
 
         return resultString;
     }
