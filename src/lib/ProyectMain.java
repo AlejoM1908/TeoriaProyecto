@@ -210,7 +210,77 @@ public class ProyectMain {
  
                         break;
                     case 3:
-                        System.out.println("Lo lamentamos, de momento este automata no esta disponible.");
+                        System.out.println("Por favor ingrese la ubicación del documento de inicialización");
+                        AFPN afpn = new AFPN(scanner.next());
+                        System.out.println("Se cargo el automata con la siguiente configuración:");
+                        System.out.println(afpn.toString());
+                        System.out.println("Que tipo de procesamiento desea ejecutar sobre el automata?");
+                        System.out.println("1. Procesar y retornar solo si es aceptada o no");
+                        System.out.println("2. Procesar cadena con detalles retornando si es aceptada o no");
+                        System.out.println("3. Procesar cadena y obtener todos los posibles procesamientos");
+                        System.out.println("4. Procear una lista de cadenas detalladamente");
+                        selection = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        
+                        switch(selection){
+                            case 1:
+                                System.out.println("Ingrese la cadena que desea procesar");
+                                string = scanner.next();
+                                boolean acceptance = afpn.isAccepted(string);
+                                
+                                if (acceptance)
+                                    System.out.println("La cadena es acepatada");
+                                else
+                                    System.out.println("La cadena no es aceptada");
+                                
+                                break;
+                            case 2:
+                                System.out.println("Ingrese la cadena que desea procesar");
+                                string = scanner.next();
+                                afpn.detailedProcessig(string, true);
+                                break;
+                            case 3:
+                                System.out.println("Ingrese la cadena que desea procesar");
+                                string = scanner.nextLine();
+                                System.out.println("");
+                                
+                                System.out.println("Ingrese la ruta de la carpeta donde desea guardar los procesamientos");
+                                path = scanner.nextLine();
+                                
+                                System.out.println("Ingrese el nombre de los archivos que desea");
+                                fileName = scanner.nextLine();
+                                
+                                afpn.completedProcedure(string, path, fileName, true);
+                                
+                                break;
+                            case 4:
+                                System.out.println("Por favor ingrese las cadenas que desea procesar");
+                                System.out.println("Cuando desee parar de agregar cadenas, coloque \"stop**\"");
+                                LinkedList<String> strings = new LinkedList<>();
+                                boolean stop = false;
+                                
+                                while (!stop){
+                                    string = scanner.nextLine();
+                                    
+                                    if (string.compareTo("stop**") == 0){
+                                        stop = true;
+                                    }
+                                    else
+                                        strings.add(string);
+                                }
+                                
+                                System.out.println("Ingrese la ruta de la carpeta donde desea guardar los procesamientos");
+                                path = scanner.nextLine();
+                                
+                                System.out.println("Ingrese el nombre de los archivos que desea");
+                                fileName = scanner.nextLine();
+                                afpn.processList(strings, path, fileName, true);
+                                
+                                break;
+                            default:
+                        }
+                        
                         break;
                     case 4:
                         System.out.println("Por favor ingrese la ubicación del documento de inicialización");
