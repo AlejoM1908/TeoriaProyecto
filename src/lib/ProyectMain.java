@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import lib.automatons.AF2P;
 import lib.automatons.AFD;
 import lib.automatons.AFPD;
+import lib.automatons.AFPN;
 
 public class ProyectMain {
     public static void main(String[] args){
