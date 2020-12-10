@@ -33,8 +33,7 @@ public class AF2P extends AF{
         this.acceptanceStates = model.acceptanceStates();
         this.firstStackAlphabet = model.firstStackAlphabet();
         this.secondStackAlphabet = model.secondStackAlphabet();
-        //this.transitionFunction = model.transitionFunction();
-
+        this.transitionFunction = model.transitionFunction();
         this.alphabet.add('$');
         this.firstStackAlphabet.add('$');
         this.secondStackAlphabet.add('$');
