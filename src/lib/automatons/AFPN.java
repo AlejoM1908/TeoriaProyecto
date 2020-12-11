@@ -208,7 +208,7 @@ public class AFPN extends AF {
         for(String pro: procedures){
             String[] checks = pro.split(">>>|>>");
             for(String check : checks){
-                if(check.compareTo("accepted") == 0){
+                if(check.contains("accepted") == true){
                     result.add(pro);
                     if(consolePrint){ System.out.println(pro);   } return result;
                 }
@@ -232,9 +232,9 @@ public class AFPN extends AF {
         for(String pro : procedures){
             String[] checks = pro.split(">>>|>>");
             for(String check: checks ){
-                if(check.compareTo("accepted") == 0){
+                if(check.contains("accepted") == true){
                     accepted.add(pro);
-                }else if(check.compareTo("notAccepted") == 0 || check.compareTo("aborted") == 0){
+                }else if(check.contains("notAccepted") == true || check.compareTo("aborted") == 0){
                     notAccepted.add(pro);
                 }
             }
@@ -252,13 +252,13 @@ public class AFPN extends AF {
             if(notAccepted.isEmpty()){
                 System.out.println("0");
             } else {
-                for(String N: accepted){
+                for(String N: notAccepted){
                     System.out.println(N);
                 }
             }
         }
-        archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
-        archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        //archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
+        //archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
         return procedures.size();
     }
     
@@ -280,10 +280,10 @@ public class AFPN extends AF {
             for (String pro : procedures) {
                 String[] checks = pro.split(">>>|>>");
                 for (String check : checks) {
-                    if (check.compareTo("accepted") == 0) {
+                    if (check.contains("accepted") == true) {
                         accepted.add(pro);
                         aFinal.add(pro);
-                    } else if (check.compareTo("notAccepted") == 0 || check.compareTo("aborted") == 0) {
+                    } else if (check.contains("notAccepted") == true || check.contains("aborted") == true) {
                         notAccepted.add(pro);
                         nFinal.add(pro);
                     }
@@ -302,7 +302,7 @@ public class AFPN extends AF {
                 if (notAccepted.isEmpty()) {
                     System.out.println("0");
                 } else {
-                    for (String N : accepted) {
+                    for (String N : notAccepted) {
                         System.out.println(N);
                     }
                 }
@@ -320,8 +320,8 @@ public class AFPN extends AF {
             stringNum++;
         }
         
-        archiveWritter.writeProcessings(aFinal, path + "\\" +fileName + "AcceptedAFNP.txt");
-        archiveWritter.writeProcessings(nFinal, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        //archiveWritter.writeProcessings(aFinal, path + "\\" +fileName + "AcceptedAFNP.txt");
+        //archiveWritter.writeProcessings(nFinal, path + "\\" +fileName + "UnapprovedAFNP.txt");
     }
     
     public String toString(){
