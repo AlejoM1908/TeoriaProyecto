@@ -257,8 +257,8 @@ public class AFPN extends AF {
                 }
             }
         }
-        //archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
-        //archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        archiveWritter.writeProcessings(accepted, path + "\\" +fileName + "AcceptedAFNP.txt");
+        archiveWritter.writeProcessings(notAccepted, path + "\\" +fileName + "UnapprovedAFNP.txt");
         return procedures.size();
     }
     
@@ -320,8 +320,8 @@ public class AFPN extends AF {
             stringNum++;
         }
         
-        //archiveWritter.writeProcessings(aFinal, path + "\\" +fileName + "AcceptedAFNP.txt");
-        //archiveWritter.writeProcessings(nFinal, path + "\\" +fileName + "UnapprovedAFNP.txt");
+        archiveWritter.writeProcessings(aFinal, path + "\\" +fileName + "AcceptedAFNP.txt");
+        archiveWritter.writeProcessings(nFinal, path + "\\" +fileName + "UnapprovedAFNP.txt");
     }
     
     public String toString(){
