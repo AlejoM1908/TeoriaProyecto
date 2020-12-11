@@ -90,7 +90,7 @@ public class MT {
 
             if (foundTransition == false)
             {
-                System.err.println ("No existe una transición válida para esta fase. Estado = " + CurrentState + " , símbolo = " + Tape.charAt(CurrentSymbol));
+                System.err.println ("No existe una transición válida para esta fase. Estado =  " + CurrentState + " , símbolo = " + Tape.charAt(CurrentSymbol));
                 return false;
             }
             else
@@ -130,11 +130,13 @@ public class MT {
         }
     }
 
+
+
     public boolean addState(String newState)
     {
         if (StateSpace.contains(newState))
         {
-        return false;
+            return false;
         }
         else
         {
