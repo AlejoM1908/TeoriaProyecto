@@ -193,13 +193,12 @@ public class AFPN extends AF {
         
         for (String pro : processing){
             String[] check = pro.split(">>>|>>");
-            for( int i =0;i<check.length;i++){
-                if(check[i].compareTo("accepted")== 0){ return true;    }
+            for( int i =0; i<check.length;i++){
+                if(check[i].contains("accepted") == true ){ return true;     }
             }
             
         }
         return false;
-       
     }
     
     public LinkedList<String> detailedProcessig(String string, boolean consolePrint){
