@@ -395,7 +395,7 @@ public class AFPD extends AFP {
                 }
             }
             
-            cartesianAutomaton = new AutomatonModel(cartesianAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, transitionFunction, cartesianStackAlphabet, secondStackAlphabet);
+            cartesianAutomaton = new AutomatonModel(auxAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, transitionFunction, cartesianStackAlphabet, secondStackAlphabet);
             returnAFPD = new AFPD(cartesianAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, cartesianStackAlphabet,
                     cartesianDelta);                                
             returnAFPD.model = cartesianAutomaton;

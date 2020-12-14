@@ -1,0 +1,32 @@
+Cadena: aabbbb
+Salida:(q0~q0,aabbbb, $)->(q1~q1,abbbb, A)->(q0~q1,abbbb, AA)->(q1~q0,bbbb, AAA)->(q0~q0,bbbb, AAAA)->(q2~q2,bbb, AAA)->(q2~q0,bb, AA)->(q2~q2,b, A)->(q2~q0, $, $) -> accepted
+Yes 
+
+Cadena: ababaaabb
+Salida:(q0~q0,ababaaabb, $)->(q1~q1,babaaabb, A)->(q0~q1,babaaabb, AA)->(q2~q3,abaaabb, A) -> rejected
+No 
+
+Cadena: aaabbb
+Salida:(q0~q0,aaabbb, $)->(q1~q1,aabbb, A)->(q0~q1,aabbb, AA)->(q1~q0,abbb, AAA)->(q0~q0,abbb, AAAA)->(q1~q1,bbb, AAAAA)->(q0~q1,bbb, AAAAAA)->(q2~q3,bb, AAAAA)->(q2~q1,b, AAAA)->(q2~q3, $, AAA) -> rejected
+No 
+
+Cadena: aaaabbbbbbbb
+Salida:(q0~q0,aaaabbbbbbbb, $)->(q1~q1,aaabbbbbbbb, A)->(q0~q1,aaabbbbbbbb, AA)->(q1~q0,aabbbbbbbb, AAA)->(q0~q0,aabbbbbbbb, AAAA)->(q1~q1,abbbbbbbb, AAAAA)->(q0~q1,abbbbbbbb, AAAAAA)->(q1~q0,bbbbbbbb, AAAAAAA)->(q0~q0,bbbbbbbb, AAAAAAAA)->(q2~q2,bbbbbbb, AAAAAAA)->(q2~q0,bbbbbb, AAAAAA)->(q2~q2,bbbbb, AAAAA)->(q2~q0,bbbb, AAAA)->(q2~q2,bbb, AAA)->(q2~q0,bb, AA)->(q2~q2,b, A)->(q2~q0, $, $) -> accepted
+Yes 
+
+Cadena: a
+Salida:(q0~q0,a, $)->(q1~q1, $, A) -> rejected
+No 
+
+Cadena: b
+Salida:(q0~q0,b, $) -> rejected
+No 
+
+Cadena: ab
+Salida:(q0~q0,ab, $)->(q1~q1,b, A)->(q0~q1,b, AA)->(q2~q3, $, A) -> rejected
+No 
+
+Cadena: aaabbbbbb
+Salida:(q0~q0,aaabbbbbb, $)->(q1~q1,aabbbbbb, A)->(q0~q1,aabbbbbb, AA)->(q1~q0,abbbbbb, AAA)->(q0~q0,abbbbbb, AAAA)->(q1~q1,bbbbbb, AAAAA)->(q0~q1,bbbbbb, AAAAAA)->(q2~q3,bbbbb, AAAAA)->(q2~q1,bbbb, AAAA)->(q2~q3,bbb, AAA)->(q2~q1,bb, AA)->(q2~q3,b, A)->(q2~q1, $, $) -> rejected
+No 
+

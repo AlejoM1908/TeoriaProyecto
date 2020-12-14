@@ -165,7 +165,7 @@ public class ProyectMain {
                                 }
                                 int continuar;
                                 while (run) {
-                                    cartesianProduct.toString();
+                                    System.out.println(cartesianProduct.toString());
                                     System.out.println("1. Procesar y retornar solo si es aceptada o no");
                                     System.out.println("2. Procesar cadena con detalles retornando si es aceptada o no");
                                     System.out.println("3. Procear una lista de cadenas detalladamente");
