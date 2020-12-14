@@ -29,17 +29,9 @@ class test{
             Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        AF2P test_02 = new AF2P("C:\\Users\\danie\\Documents\\NetBeansProjects\\ProyectoIntro\\txtTest\\AF2P_02.msm");
+        AFPD afpd = new AFPD("C:\\Users\\Armageddon132\\Documents\\NetBeansProjects\\TeoriaProyecto\\txtTest\\AFPD.dpda");
 
-        LinkedList<String> strings = new LinkedList<>();
-        strings.add("abc");
-        strings.add("abbc");
-        strings.add("aaabbbbbbccc");
-        strings.add("aaabbbcc");
-
-        System.out.println(test_02.toString());
-
-        test_02.processStringList(strings, "C:\\Users\\danie\\Desktop\\prueba AF2P", "testing", true);
+        System.out.println(afpd.processStringR("aabba", true));
         //test.detailedProcessing("abc", true);
     }
 }

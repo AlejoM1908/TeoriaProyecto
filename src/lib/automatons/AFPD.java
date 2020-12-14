@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import lib.App.ArchiveReader;
@@ -40,6 +39,10 @@ public class AFPD extends AFP {
     }
 
     public void initializeAFPD() {
+        if (!this.alphabet.contains('$')) {
+            this.alphabet.add('$');
+        }
+
         this.initializeDelta(this.statesList.size(), this.alphabet.size());
         //System.out.println(this.model.toString());
 
@@ -114,7 +117,7 @@ public class AFPD extends AFP {
     }
 
     public String returnStackasString() {
-        if(this.stack.isEmpty()){
+        if (this.stack.isEmpty()) {
             return "$";
         }
         Object[] array = this.stack.toArray();
@@ -163,7 +166,7 @@ public class AFPD extends AFP {
             }
             process = process.concat("(" + actualState + "," + actualSymbol + string + ", "); //+ ")->");
             actualSymbolP = this.getColumn(actualSymbol);
-                if (!this.getDelta()[actualStateP][actualSymbolP].isEmpty()) {
+            if (!this.getDelta()[actualStateP][actualSymbolP].isEmpty()) {
                 for (TransitionModel l : this.getDelta()[actualStateP][actualSymbolP]) {
                     if (l.firstStackCharacter().charAt(0) == lamda) {
                         if (l.firstStackAction().charAt(0) != lamda) {
@@ -173,8 +176,8 @@ public class AFPD extends AFP {
                                 process = process.concat(returnStackasString() + ")->");
                             }
                             this.stack.push(l.firstStackAction().charAt(0));
-                        }else{
-                            process = process.concat(returnStackasString()  + ")->");
+                        } else {
+                            process = process.concat(returnStackasString() + ")->");
                         }
                         actualState = l.transitionState();
                         break;
@@ -190,7 +193,7 @@ public class AFPD extends AFP {
                             actualState = l.transitionState();
                             break;
                         }
-                    }else{
+                    } else {
                         reject = false;
                         process = process.concat("$) -> rejected");
                         //break;
@@ -206,8 +209,8 @@ public class AFPD extends AFP {
                                 process = process.concat(returnStackasString() + ")->");
                             }
                             this.stack.push(l.firstStackAction().charAt(0));
-                        }else{
-                            process = process.concat(returnStackasString()  + ")->");
+                        } else {
+                            process = process.concat(returnStackasString() + ")->");
                         }
                         actualState = l.transitionState();
                         string = restore;
@@ -225,7 +228,7 @@ public class AFPD extends AFP {
                             actualState = l.transitionState();
                             break;
                         }
-                    }else{
+                    } else {
                         reject = false;
                         process = process.concat("$) -> rejected");
                         //break;
@@ -251,7 +254,7 @@ public class AFPD extends AFP {
             if (print) {
                 if (string.isEmpty() && reject) {
                     process = process.concat("(" + actualState + "," + " $, " + returnStackasString() + ") -> rejected");
-                    
+
                 }
                 return process;
             } else {
@@ -262,7 +265,7 @@ public class AFPD extends AFP {
     }
 
     public void processStringList(List<String> stringList, String fileName, boolean print) throws IOException {
-        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\" , fileName);
+        File file = new File(System.getProperty("user.dir") + "\\resultadosProcesamiento\\", fileName);
         String line;
         if (!file.exists()) {
             file.createNewFile();
@@ -298,12 +301,12 @@ public class AFPD extends AFP {
         ArrayList<TransitionModel>[][] cartesianDelta;
         Stack<Character> cartesianStack = new Stack<>();
         List<Character> auxAlphabet = new ArrayList<>(this.getAlphabet());
-        if(auxAlphabet.indexOf(lamda)==-1){
+        if (auxAlphabet.indexOf(lamda) == -1) {
             auxAlphabet = new ArrayList<>(this.getAlphabet());
-        }else{
+        } else {
             auxAlphabet.remove(auxAlphabet.indexOf(lamda));
         }
-        
+
         //Verifica si los automatas tienen el mismo alfabeto para realizar el producto cartesiano
         if (!automatonAFD.getAlphabet().toString().equals(auxAlphabet.toString())) {
             System.out.println("Los automatas no tiene el mismo alfabeto, no se puede hacer producto cartesiano");
@@ -374,9 +377,9 @@ public class AFPD extends AFP {
         }
         return returnAFPD;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return this.model.toString();
     }
 }
