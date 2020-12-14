@@ -105,45 +105,45 @@ public class ProyectMain {
                         System.out.println("4. Producto Cartesiano AFD con un AFPD");
                         selection = scanner.nextInt();
                         scanner.nextLine();
-                        
-                        switch(selection){
+
+                        switch (selection) {
                             case 1:
                                 System.out.println("Ingrese la cadena que desea procesar");
                                 string = scanner.nextLine();
                                 boolean result = afpd.processString(string);
-                                
-                                if (result)
+
+                                if (result) {
                                     System.out.println("La cadena es acepatada");
-                                else
+                                } else {
                                     System.out.println("La cadena no es aceptada");
-                                
-                                
+                                }
+
                                 break;
                             case 2:
                                 System.out.println("Ingrese la cadena que desea procesar");
                                 string = scanner.nextLine();
                                 afpd.processStringWithDetails(string);
-                                
+
                                 break;
                             case 3:
                                 System.out.println("Por favor ingrese las cadenas que desea procesar");
                                 System.out.println("Cuando desee parar de agregar cadenas, coloque \"stop**\"");
                                 LinkedList<String> strings = new LinkedList<>();
                                 boolean stop = false;
-                                
-                                while (!stop){
+
+                                while (!stop) {
                                     string = scanner.nextLine();
-                                    
-                                    if (string.compareTo("stop**") == 0){
+
+                                    if (string.compareTo("stop**") == 0) {
                                         stop = true;
-                                    }
-                                    else
+                                    } else {
                                         strings.add(string);
+                                    }
                                 }
-                                
+
                                 System.out.println("Ingrese el nombre del archivo en el que desea guardar");
                                 fileName = scanner.nextLine();
-                                
+
                                 try {
                                     afpd.processStringList(strings, fileName, true);
                                 } catch (IOException ex) {
@@ -159,16 +159,18 @@ public class ProyectMain {
                                 AFPD cartesianAFPD = new AFPD(absolutePath + shorcutAutomaton + scanner.nextLine());
                                 AFPD cartesianProduct = cartesianAFPD.cartesianProductAFD(cartesianAFD);
                                 boolean run;
-                                if(cartesianProduct==null){
-                                    run=false;
-                                }else{
+                                if (cartesianProduct == null) {
+                                    run = false;
+                                } else {
                                     System.out.println("Producto cartesiano realizado con exito, que desea hacer");
-                                    run=true;
-                                }                               
+                                    run = true;
+                                }
                                 int continuar;
-                                while (run) {                                    
+                                while (run) {
+                                    cartesianProduct.toString();
                                     System.out.println("1. Procesar y retornar solo si es aceptada o no");
                                     System.out.println("2. Procesar cadena con detalles retornando si es aceptada o no");
+                                    System.out.println("3. Procear una lista de cadenas detalladamente");
                                     selection = scanner.nextInt();
                                     scanner.nextLine();
 
@@ -189,9 +191,35 @@ public class ProyectMain {
                                             string = scanner.nextLine();
                                             cartesianProduct.processStringWithDetails(string);
                                             break;
+                                        case 3:
+                                            System.out.println("Por favor ingrese las cadenas que desea procesar");
+                                            System.out.println("Cuando desee parar de agregar cadenas, coloque \"stop**\"");
+                                            LinkedList<String> stringsCartesian = new LinkedList<>();
+                                            boolean stopCartesian = false;
+
+                                            while (!stopCartesian) {
+                                                string = scanner.nextLine();
+
+                                                if (string.compareTo("stop**") == 0) {
+                                                    stopCartesian = true;
+                                                } else {
+                                                    stringsCartesian.add(string);
+                                                }
+                                            }
+
+                                            System.out.println("Ingrese el nombre del archivo en el que desea guardar");
+                                            fileName = scanner.nextLine();
+
+                                            try {
+                                                cartesianProduct.processStringList(stringsCartesian, fileName, true);
+                                            } catch (IOException ex) {
+                                                System.out.println(Arrays.toString(ex.getStackTrace()));
+                                                Logger.getLogger(ProyectMain.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                            break;
                                         default:
                                     }
-                                    
+
                                     System.out.println("Desea procesar mas cadenas?");
                                     System.out.println("Ingrese 1 para continuar, 0 para finalizar");
                                     continuar=scanner.nextInt();

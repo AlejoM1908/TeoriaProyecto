@@ -7,7 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import lib.App.ArchiveReader;
 import lib.models.AutomatonModel;
@@ -288,15 +290,18 @@ public class AFPD extends AFP {
     }
 
     public AFPD cartesianProductAFD(AFD automatonAFD) {
-        AFPD returnAFPD;
+        AFPD returnAFPD;    //AFPD que se retorna si el producto cartesiano es exitoso
         Character lamda = '$'; //caracter para comparar
-        ArrayList<Character> cartesianAlphabet = new ArrayList<>();
-        ArrayList<String> cartesianStatesList = new ArrayList<>();
-        String cartesianInitialState;
-        ArrayList<String> cartesianAcceptanceStates = new ArrayList<>();
-        List<Character> cartesianStackAlphabet;
-        ArrayList<TransitionModel>[][] cartesianDelta;
+        ArrayList<Character> cartesianAlphabet = new ArrayList<>(); //Alfabeto del AFPD resultado del producto cartesiano
+        ArrayList<String> cartesianStatesList = new ArrayList<>();  //Lista de nuevos estados del AFPD resultado del producto cartesiano
+        String cartesianInitialState;   //Estado Inicial del AFPD resultado del producto cartesiano
+        ArrayList<String> cartesianAcceptanceStates = new ArrayList<>();    //Lista de Nuevos Estado de Aceptacion del AFPD resultado del producto cartesiano
+        List<Character> cartesianStackAlphabet; // Alfabeto de Pila del AFPD resultado del producto cartesiano
+        Map<String, Map<Character, ArrayList<TransitionModel>>> transitionFunction = new HashMap<>(); //Funcion de Trasition para el Automata Model de AFPD resultado del producto cartesiano
+        AutomatonModel cartesianAutomaton;
+        ArrayList<TransitionModel>[][] cartesianDelta;  //Delta Interno del AFPD
         Stack<Character> cartesianStack = new Stack<>();
+        List<Character> secondStackAlphabet = new ArrayList<>(); //Lista Vacio no Usada para evitar un fallo en ToString() de AutomatonModel
         List<Character> auxAlphabet = new ArrayList<>(this.getAlphabet());
         if(auxAlphabet.indexOf(lamda)==-1){
             auxAlphabet = new ArrayList<>(this.getAlphabet());
@@ -310,18 +315,18 @@ public class AFPD extends AFP {
             return null;
         } else {
             cartesianAlphabet = (ArrayList<Character>) this.getAlphabet();
-            cartesianInitialState = (automatonAFD.getInitialState() + "," + this.getInitialState());
+            cartesianInitialState = (automatonAFD.getInitialState() + "~" + this.getInitialState());
             cartesianStackAlphabet = this.getStackAlphabet();
 
             for (int i = 0; i < this.getStatesList().size(); i++) {
                 for (int j = 0; j < automatonAFD.getStatesList().size(); j++) {
-                    cartesianStatesList.add((this.getStatesList().get(i) + "," + automatonAFD.getStatesList().get(j)));
+                    cartesianStatesList.add((this.getStatesList().get(i) + "~" + automatonAFD.getStatesList().get(j)));
                 }
             }
 
             for (int i = 0; i < this.getAcceptanceStates().size(); i++) {
                 for (int j = 0; j < automatonAFD.getAcceptanceStates().size(); j++) {
-                    cartesianAcceptanceStates.add((this.getAcceptanceStates().get(i) + "," + automatonAFD.getAcceptanceStates().get(j)));
+                    cartesianAcceptanceStates.add((this.getAcceptanceStates().get(i) + "~" + automatonAFD.getAcceptanceStates().get(j)));
                 }
             }
 
@@ -336,7 +341,7 @@ public class AFPD extends AFP {
             //Ciclo que llena la funcion delta
             for (int i = 0; i < cartesianStatesList.size(); i++) {
                 for (int j = 0; j < cartesianAlphabet.size(); j++) {
-                    String[] currentCartesianState = cartesianStatesList.get(i).split(",");
+                    String[] currentCartesianState = cartesianStatesList.get(i).split("~");
                     String afpdState = currentCartesianState[0];
                     String afdState = currentCartesianState[1];
                     Character currentSymbolofCartesianAlfabet = cartesianAlphabet.get(j);
@@ -350,7 +355,7 @@ public class AFPD extends AFP {
                         if (!this.getDelta()[currentAFPDStateP][currentAFPDSymbolP].isEmpty()) {
                             for (TransitionModel l : this.getDelta()[currentAFPDStateP][currentAFPDSymbolP]) {
                                 newTransModel = new TransitionModel(cartesianStatesList.get(i), currentSymbolofCartesianAlfabet,
-                                        l.firstStackCharacter(), (l.transitionState() + "," + afdState), l.firstStackAction());
+                                        l.firstStackCharacter(), (l.transitionState() + "~" + afdState), l.firstStackAction());
                                 cartesianDelta[i][j].add(newTransModel);
                             }
                         }
@@ -360,17 +365,36 @@ public class AFPD extends AFP {
                         if (!this.getDelta()[currentAFPDStateP][currentAFPDSymbolP].isEmpty() && !automatonAFD.getDelta()[currentAFDStateP][currentAFDSymbolP].isEmpty()) {
                             for (TransitionModel l : this.getDelta()[currentAFPDStateP][currentAFPDSymbolP]) {
                                 newTransModel = new TransitionModel(cartesianStatesList.get(i), currentSymbolofCartesianAlfabet,
-                                        l.firstStackCharacter(), (l.transitionState() + "," + automatonAFD.getDelta()[currentAFDStateP][currentAFDSymbolP].get(0)), l.firstStackAction());
+                                        l.firstStackCharacter(), (l.transitionState() + "~" + automatonAFD.getDelta()[currentAFDStateP][currentAFDSymbolP].get(0)), l.firstStackAction());
                                 cartesianDelta[i][j].add(newTransModel);
                             }
                         }
                     }
                 }
             }
-
+            
+            for (int i = 0; i < cartesianStatesList.size(); i++) {
+                for (int j = 0; j < cartesianAlphabet.size(); j++) {
+                    if (!transitionFunction.containsKey(cartesianStatesList.get(i))) {
+                        transitionFunction.put(cartesianStatesList.get(i),
+                                new HashMap<Character, ArrayList<TransitionModel>>());
+                    }
+                    if (!transitionFunction.get(cartesianStatesList.get(i)).containsKey(cartesianAlphabet.get(j))) {
+                        if (!cartesianDelta[i][j].isEmpty()) {
+                            ArrayList<TransitionModel> transitionModel = new ArrayList<>();
+                            for (TransitionModel l : cartesianDelta[i][j]) {
+                                transitionModel.add(l);
+                            }
+                            transitionFunction.get(cartesianStatesList.get(i)).put(cartesianAlphabet.get(j), transitionModel);
+                        }
+                    }
+                }
+            }
+            
+            cartesianAutomaton = new AutomatonModel(cartesianAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, transitionFunction, cartesianStackAlphabet, secondStackAlphabet);
             returnAFPD = new AFPD(cartesianAlphabet, cartesianStatesList, cartesianInitialState, cartesianAcceptanceStates, cartesianStackAlphabet,
-                    cartesianDelta);
-
+                    cartesianDelta);                                
+            returnAFPD.model = cartesianAutomaton;
         }
         return returnAFPD;
     }
