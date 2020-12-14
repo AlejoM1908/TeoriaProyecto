@@ -15,10 +15,8 @@ import lib.automatons.AFPN;
 
 public class ProyectMain {
     public static void main(String[] args){
-        String string, path, fileName, shorcutProcess, shorcutAutomaton, absolutePath;
-        absolutePath = System.getProperty("user.dir");
-        shorcutProcess = "\\resultadosProcesamiento\\";
-        shorcutAutomaton = "\\txtTest\\";
+        String string, path, fileName;
+        
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Bienvenido al sistema de Automatas");
             while (true) {
@@ -39,7 +37,7 @@ public class ProyectMain {
                 switch(selection){
                     case 1:
                         System.out.println("Por favor ingrese la ubicación del documento de inicialización");
-                        AFD afd = new AFD(absolutePath + shorcutAutomaton + scanner.next());
+                        AFD afd = new AFD(scanner.next());
                         System.out.println("Se cargo el automata con la siguiente configuración:");
                         System.out.println(afd.toString());
                         System.out.println("Que tipo de procesamiento desea ejecutar sobre el automata?");
@@ -95,7 +93,7 @@ public class ProyectMain {
                         break;
                     case 2:
                         System.out.println("Por favor ingrese la ubicación del documento de inicialización");
-                        AFPD afpd = new AFPD(absolutePath + shorcutAutomaton + scanner.next());
+                        AFPD afpd = new AFPD(scanner.next());
                         System.out.println("Se cargo el automata con la siguiente configuración:");
                         System.out.println(afpd.toString());
                         System.out.println("Que tipo de procesamiento desea ejecutar sobre el automata?");
@@ -154,9 +152,9 @@ public class ProyectMain {
                                 break;
                             case 4:
                                 System.out.println("Por favor ingrese el nombre del archivo para el AUTOMATA FINITO DETERMINISTA");
-                                AFD cartesianAFD = new AFD(absolutePath + shorcutAutomaton + scanner.nextLine());
+                                AFD cartesianAFD = new AFD(scanner.nextLine());
                                 System.out.println("Por favor ingrese el nombre del archivo para el AUTOMATA FINITO CON PILA DETERMINISTA");
-                                AFPD cartesianAFPD = new AFPD(absolutePath + shorcutAutomaton + scanner.nextLine());
+                                AFPD cartesianAFPD = new AFPD(scanner.nextLine());
                                 AFPD cartesianProduct = cartesianAFPD.cartesianProductAFD(cartesianAFD);
                                 boolean run;
                                 if (cartesianProduct == null) {
